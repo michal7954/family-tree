@@ -1,0 +1,9 @@
+Kwestie:
+hosting
+bezpieczne logowanie i przesyłanie danych client-server
+eksport danych do uniwersalnego formatu
+
+frontend:
+input danych do tabel
+wyświetlenie danych tabelarycznie + filtrowanie
+rysowanie drzew genealogicznych + dodatkowe ograniczenia (np. linia męska)
