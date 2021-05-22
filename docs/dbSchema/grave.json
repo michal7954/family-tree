@@ -1,0 +1,9 @@
+{
+    "id": "",
+    "localization": "",
+    "graveImg": "img",
+    "plaqueImg": "img",
+    "buriedList": [
+        "person.id"
+    ]
+}

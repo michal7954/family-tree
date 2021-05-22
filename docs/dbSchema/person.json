@@ -1,0 +1,55 @@
+{
+    "id": "",
+    "name": "",
+    "surname": "",
+    "isAlive":"",
+    "description":"",
+    "lifeEvents": [
+        {
+            "type": "birth",
+            "date": "date.json",
+            "place": ""
+        },
+        {
+            "type": "death",
+            "date": "date.json",
+            "place": ""
+        },
+        {
+            "type": "marriage",
+            "date": "date.json",
+            "place": ""
+        },
+        {
+            "type": "baptism",
+            "date": "date.json",
+            "place": ""
+        },
+        {
+            "type": "funeral",
+            "date": "date.json",
+            "grave": "grave.id"
+        },
+        {
+            "type": "any",
+            "description": "",
+            "date": "date.json"
+        }
+    ],
+    "mother": "person.id",
+    "father": "person.id",
+    "children": [
+        "person.id"
+    ],
+    "otherRelations":[
+        {
+            "type":"",
+            "description":"",
+            "person":"person.id"
+        }
+    ],
+    "photo":"img",
+    "phoneNumber":"",
+    "emailAddress":"",
+    "residencePlace":"address.json"
+}

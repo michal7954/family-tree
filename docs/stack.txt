@@ -1,0 +1,10 @@
+Node.js
+Express.js
+NeDB
+
+React.js
+
+
+Kwestie:
+hosting
+bezpieczne logowanie i przesyłanie danych
