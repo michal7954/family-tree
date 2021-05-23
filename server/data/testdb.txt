@@ -1,2 +1,10 @@
-{"value":"dupa","_id":"Mv4r1HmHUKQfsoba"}
 {"value":"dupa2","_id":"1df8xoxhUSWbDgvA"}
+{"value":"dupa","_id":"Mv4r1HmHUKQfsoba"}
+{"value":"teks","_id":"fTQZjSGkhE9HcytQ"}
+{"hello":"world","n":5,"today":{"$$date":1621798980829},"nedbIsAwesome":true,"notthere":null,"fruits":["apple","orange","pear"],"infos":{"name":"nedb"},"_id":"ky6OwobcqCHPGg4f"}
+{"name":"imie","surname":"nazw","isAlive":true,"description":"opis","mother":"matha","father":"ojciec","phoneNumber":"tel","emailAddress":"mail","residencePlace":"zamieszkanie","_id":"flF6b8eiY7dkvMmE"}
+{"name":"imie","surname":"nazw","isAlive":false,"description":"opis","mother":"matha","father":"ojciec","phoneNumber":"tel","emailAddress":"mail","residencePlace":"zamieszkanie","_id":"SviQOeQc3TVUKNBK"}
+{"name":"Jarosław","surname":"Kaczyński","isAlive":true,"description":"Bóg","mother":"Atena","father":"Zeus","phoneNumber":"696969696","emailAddress":"mail@mail.com","residencePlace":"Zasiedmiogórogród","_id":"uJwNgQ394mWal6uH"}
+{"name":"sdaf","surname":"","isAlive":"","description":"asfd","mother":"","father":"","phoneNumber":"","emailAddress":"","residencePlace":"","_id":"wsY6tqSToFcJmSlR"}
+{"name":"sadf","surname":"","isAlive":"","description":"sadf","mother":"","father":"","phoneNumber":"","emailAddress":"","residencePlace":"","_id":"0FXABX6uEiViTFPC"}
+{"name":"asfda","surname":"","isAlive":"","description":"","mother":"","father":"","phoneNumber":"","emailAddress":"","residencePlace":"","_id":"9JJ9EkwTraQ80nh4"}

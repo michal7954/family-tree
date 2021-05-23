@@ -19,7 +19,7 @@ function App() {
         >
           Learn React
         </a> */}
-        <Data/>
+        {/* <Data/> */}
         <Form />
       </header>
     </div>
