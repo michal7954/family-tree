@@ -6,19 +6,21 @@ class Data extends React.Component {
     };
 
     componentDidMount() {
-        // fetch("https://randomuser.me/api/?format=json&results=10")
-        fetch("http://localhost:1234")
-            .then(res => res.json())
-            .then(json => {
-                console.log(json.results)
-                this.setState({ contacts: json.results })
+
+        fetch('http://localhost:1234/')
+            .then(response => response.text())
+            .then(data => {
+                console.log(data)
+                this.setState({ contacts: data })
             });
+
+
     }
 
     render() {
         return (
             <div>
-                data block
+                data block:<br/>
                 {this.state.contacts}
             </div>
         );

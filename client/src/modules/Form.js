@@ -10,7 +10,19 @@ class Form extends React.Component {
 
     handleChange(event) { this.setState({ value: event.target.value }); }
     handleSubmit(event) {
-        alert('Podano następujące imię: ' + this.state.value);
+        // alert('Podano następujące imię: ' + this.state.value);
+        var data = JSON.stringify(this.state)
+        console.log(data)
+        fetch('http://localhost:1234/form', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: data
+        })
+            // .then((result) => result.text())
+            .then((info) => { console.log(info); })
+
         event.preventDefault();
     }
 
