@@ -33,6 +33,13 @@ app.post('/personFormSubmin', (req, res) => {
     res.sendStatus(200);
 })
 
+app.get('/peopleList', (req, res) => {
+    
+    people.find({}, function (err, docs) {
+        res.send(docs)
+      });
+})
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
