@@ -6,7 +6,7 @@ class Data extends React.Component {
     };
 
     componentDidMount() {
-        fetch('http://localhost:1234/')
+        fetch('http://localhost:4000/')
             .then(response => response.text())
             .then(data => {
                 console.log(data)

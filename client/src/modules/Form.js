@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Form extends React.Component {
+export default class Form extends React.Component {
     constructor(props) {
         super(props);
 
@@ -167,8 +167,6 @@ class Form extends React.Component {
         );
     }
 }
-
-export default Form;
 
 class LifeEventSection extends React.Component {
     render() {
