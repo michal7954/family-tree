@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 class Form extends React.Component {
     constructor(props) {
@@ -6,7 +6,6 @@ class Form extends React.Component {
 
         this.state = {
             formData: {
-                // value: '', 
                 name: '',
                 surname: '',
                 isAlive: false,
@@ -15,20 +14,13 @@ class Form extends React.Component {
                 mother: '',
                 father: '',
                 // children: [],
-                lifeEvents: [
-                    // {
-                    //     type: "any",
-                    //     date: "",
-                    //     place: "",
-                    // }
-                ],
+                lifeEvents: [],
                 phoneNumber: '',
                 emailAddress: '',
                 residencePlace: ''
             },
             eventsNumber: 0
         }
-
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,7 +33,6 @@ class Form extends React.Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        console.log(name, value)
         this.setState(prevState => ({
             formData: {
                 ...prevState.formData,
@@ -51,9 +42,7 @@ class Form extends React.Component {
     }
 
     handleSubmit(event) {
-        // alert('Podano następujące imię: ' + this.state.value);
         var data = JSON.stringify(this.state.formData)
-        console.log(data)
         fetch('http://localhost:1234/form', {
             method: "POST",
             headers: {
@@ -61,21 +50,24 @@ class Form extends React.Component {
             },
             body: data
         })
-            // .then((result) => result.text())
-            .then((info) => { console.log(info); })
 
+        // czyszczenie pól po wysłaniu
         // this.setState({
-        //     // value: '', 
-        //     name: '',
-        //     surname: '',
-        //     isAlive: '',
-        //     description: '',
-        //     mother: '',
-        //     father: '',
-        //     // children: [],
-        //     phoneNumber: '',
-        //     emailAddress: '',
-        //     residencePlace: ''
+        //     formData: {
+        //         name: '',
+        //         surname: '',
+        //         isAlive: false,
+        //         gender: 'm',
+        //         description: '',
+        //         mother: '',
+        //         father: '',
+        //         // children: [],
+        //         lifeEvents: [],
+        //         phoneNumber: '',
+        //         emailAddress: '',
+        //         residencePlace: ''
+        //     },
+        //     eventsNumber: 0
         // });
 
         event.preventDefault();
@@ -103,13 +95,11 @@ class Form extends React.Component {
 
     handleLifeEventSectionInputChange(event, index) {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const value = target.value;
         const name = target.name;
-        // console.log(event, index)
 
         let newLifeEvents = [...this.state.formData.lifeEvents]
         newLifeEvents[index][name] = value
-        // console.log(newLifeEvents)
 
         this.setState(prevState => ({
             formData: {
@@ -122,14 +112,10 @@ class Form extends React.Component {
     }
 
     removeLifeEventSection(event, index) {
-        // console.log("reomve"+index)
 
         let newLifeEvents = [...this.state.formData.lifeEvents]
-        // newLifeEvents[index] = value
-        // console.log(newLifeEvents)
-        if (index > -1) {
+        if (index > -1)
             newLifeEvents.splice(index, 1);
-        }
 
         this.setState(prevState => ({
             eventsNumber: prevState.eventsNumber - 1,
@@ -185,12 +171,6 @@ class Form extends React.Component {
 export default Form;
 
 class LifeEventSection extends React.Component {
-    constructor(props) {
-        super(props);
-        // this.handleInputChange = this.handleInputChange.bind(this);
-    }
-
-
     render() {
         return (
             <span>

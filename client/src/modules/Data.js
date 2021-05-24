@@ -1,4 +1,4 @@
-import React, { Component, AppHeader, ContactsList } from 'react';
+import React from 'react';
 
 class Data extends React.Component {
     state = {
@@ -6,15 +6,12 @@ class Data extends React.Component {
     };
 
     componentDidMount() {
-
         fetch('http://localhost:1234/')
             .then(response => response.text())
             .then(data => {
                 console.log(data)
                 this.setState({ contacts: data })
             });
-
-
     }
 
     render() {
