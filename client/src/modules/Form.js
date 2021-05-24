@@ -10,7 +10,7 @@ class Form extends React.Component {
                 name: '',
                 surname: '',
                 isAlive: false,
-                gender:'m',
+                gender: 'm',
                 description: '',
                 mother: '',
                 father: '',
@@ -32,15 +32,16 @@ class Form extends React.Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.addLifeEventInput = this.addLifeEventInput.bind(this);
-        this.handleEventSectionInputChange = this.handleEventSectionInputChange.bind(this)
+        this.addLifeEventSection = this.addLifeEventSection.bind(this);
+        this.handleLifeEventSectionInputChange = this.handleLifeEventSectionInputChange.bind(this)
+        this.removeLifeEventSection = this.removeLifeEventSection.bind(this)
     }
 
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        console.log(name,value)
+        console.log(name, value)
         this.setState(prevState => ({
             formData: {
                 ...prevState.formData,
@@ -80,7 +81,7 @@ class Form extends React.Component {
         event.preventDefault();
     }
 
-    addLifeEventInput(event) {
+    addLifeEventSection(event) {
 
         this.setState(prevState => ({
             eventsNumber: prevState.eventsNumber + 1,
@@ -100,15 +101,15 @@ class Form extends React.Component {
         event.preventDefault();
     }
 
-    handleEventSectionInputChange(event, index) {
+    handleLifeEventSectionInputChange(event, index) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        console.log(event, index)
+        // console.log(event, index)
 
         let newLifeEvents = [...this.state.formData.lifeEvents]
         newLifeEvents[index][name] = value
-        console.log(newLifeEvents)
+        // console.log(newLifeEvents)
 
         this.setState(prevState => ({
             formData: {
@@ -116,12 +117,35 @@ class Form extends React.Component {
                 lifeEvents: newLifeEvents
             }
         }));
+
+        event.preventDefault();
+    }
+
+    removeLifeEventSection(event, index) {
+        // console.log("reomve"+index)
+
+        let newLifeEvents = [...this.state.formData.lifeEvents]
+        // newLifeEvents[index] = value
+        // console.log(newLifeEvents)
+        if (index > -1) {
+            newLifeEvents.splice(index, 1);
+        }
+
+        this.setState(prevState => ({
+            eventsNumber: prevState.eventsNumber - 1,
+            formData: {
+                ...prevState.formData,
+                lifeEvents: newLifeEvents
+            }
+        }));
+
+        event.preventDefault();
     }
 
     render() {
 
         const events = this.state.formData.lifeEvents.map((element, index) =>
-            <LifeEventSection values={element} onInputChange={this.handleEventSectionInputChange} eventIndex={index} />
+            <LifeEventSection values={element} removeLifeEventSection={this.removeLifeEventSection} onInputChange={this.handleLifeEventSectionInputChange} eventIndex={index} />
         )
 
         return (
@@ -130,11 +154,11 @@ class Form extends React.Component {
                 <label>Imię: <input type="text" name="name" value={this.state.formData.name} onChange={this.handleInputChange} /></label><br />
                 <label>Nazwisko: <input type="text" name="surname" value={this.state.formData.surname} onChange={this.handleInputChange} /></label><br />
                 <label>Żyjąca: <input type="checkbox" name="isAlive" value={this.state.formData.isAlive} onChange={this.handleInputChange} /></label><br />
-                
+
                 <div onChange={this.handleInputChange}>
-                Płeć: 
+                    Płeć:
                 <label><input type="radio" name="gender" value="w" />kobieta</label>
-                <label><input type="radio" name="gender" value="m" defaultChecked />mężczyzna</label><br />
+                    <label><input type="radio" name="gender" value="m" defaultChecked />mężczyzna</label><br />
                 </div>
 
                 <label>Opis: <textarea name="description" value={this.state.formData.description} onChange={this.handleInputChange} /></label><br />
@@ -148,10 +172,9 @@ class Form extends React.Component {
                             <label>E-mail: <input type="text" name="emailAddress" value={this.state.formData.emailAddress} onChange={this.handleInputChange} /></label><br />
                             <label>Miejsce zamieszkania: <input type="text" name="residencePlace" value={this.state.formData.residencePlace} onChange={this.handleInputChange} /></label><br />
                         </div>
-                        :<div></div>
+                        : <div></div>
                 }
-                <button onClick={this.addLifeEventInput}>Dodaj kolejne wydarzenie z życia: {this.state.eventsNumber}</button><br />
-
+                <button onClick={this.addLifeEventSection}>Dodaj kolejne wydarzenie z życia: {this.state.eventsNumber}</button><br />
                 {events}
                 <input type="submit" value="Wyślij" />
             </form>
@@ -180,7 +203,9 @@ class LifeEventSection extends React.Component {
                     <option value="funeral">Pogrzeb</option>
                 </select>
                 <label><input type="date" name="date" value={this.props.values.date} onChange={event => this.props.onInputChange(event, this.props.eventIndex)} /></label>
-                <label><input type="text" name="place" value={this.props.values.place} onChange={event => this.props.onInputChange(event, this.props.eventIndex)} /></label><br />
+                <label><input type="text" name="place" value={this.props.values.place} onChange={event => this.props.onInputChange(event, this.props.eventIndex)} /></label>
+                <button onClick={event => this.props.removeLifeEventSection(event, this.props.eventIndex)}>Usuń</button>
+                <br />
             </span>
         );
     }
