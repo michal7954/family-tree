@@ -3,6 +3,7 @@
     "name": "",
     "surname": "",
     "isAlive":"",
+    "gender":"",
     "description":"",
     "lifeEvents": [
         {

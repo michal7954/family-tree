@@ -9,7 +9,8 @@ class Form extends React.Component {
                 // value: '', 
                 name: '',
                 surname: '',
-                isAlive: '',
+                isAlive: false,
+                gender:'m',
                 description: '',
                 mother: '',
                 father: '',
@@ -39,6 +40,7 @@ class Form extends React.Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
+        console.log(name,value)
         this.setState(prevState => ({
             formData: {
                 ...prevState.formData,
@@ -128,6 +130,13 @@ class Form extends React.Component {
                 <label>Imię: <input type="text" name="name" value={this.state.formData.name} onChange={this.handleInputChange} /></label><br />
                 <label>Nazwisko: <input type="text" name="surname" value={this.state.formData.surname} onChange={this.handleInputChange} /></label><br />
                 <label>Żyjąca: <input type="checkbox" name="isAlive" value={this.state.formData.isAlive} onChange={this.handleInputChange} /></label><br />
+                
+                <div onChange={this.handleInputChange}>
+                Płeć: 
+                <label><input type="radio" name="gender" value="w" />kobieta</label>
+                <label><input type="radio" name="gender" value="m" defaultChecked />mężczyzna</label><br />
+                </div>
+
                 <label>Opis: <textarea name="description" value={this.state.formData.description} onChange={this.handleInputChange} /></label><br />
                 <label>Matka: <input type="text" name="mother" value={this.state.formData.mother} onChange={this.handleInputChange} /></label><br />
                 <label>Ojciec: <input type="text" name="father" value={this.state.formData.father} onChange={this.handleInputChange} /></label><br />
