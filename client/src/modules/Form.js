@@ -43,7 +43,7 @@ class Form extends React.Component {
 
     handleSubmit(event) {
         var data = JSON.stringify(this.state.formData)
-        fetch('http://localhost:1234/form', {
+        fetch('http://localhost:4000/personFormSubmin', {
             method: "POST",
             headers: {
                 'Content-type': 'application/json'

@@ -1,49 +1,35 @@
-const express = require('express')
-var cors = require('cors')
+const express = require('express');
 const bodyParser = require('body-parser');
+var cors = require('cors');
+var Datastore = require('nedb');
 
 const app = express()
-const port = 1234
+const port = 4000
 
 app.use(cors())
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
-var Datastore = require('nedb')
+var people = new Datastore({ filename: './data/people.txt' });
+var graves = new Datastore({ filename: './data/graves.txt' });
+var cemeteries = new Datastore({ filename: './data/cemeteries.txt' });
 
-var db = new Datastore({ filename: './data/testdb.txt' });
+people.loadDatabase();
+graves.loadDatabase();
+cemeteries.loadDatabase();
 
-db.loadDatabase(function (err) {    // Callback is optional
-    // Now commands will be executedd
-});
-
-var doc = { hello: 'world'
-               , n: 5
-               , today: new Date()
-               , nedbIsAwesome: true
-               , notthere: null
-               , notToBeSaved: undefined  // Will not be saved
-               , fruits: [ 'apple', 'orange', 'pear' ]
-               , infos: { name: 'nedb' }
-               };
- 
-// db.insert(doc, function (err, newDoc) {   // Callback is optional
-//   // newDoc is the newly inserted document, including its _id
-//   // newDoc has no key called notToBeSaved since its value was undefined
-// });
 
 app.get('/', (req, res) => {
-    res.send('DUPA')
+    res.send('Hello World!')
 })
 
-app.post('/form', (req, res) => {
-    console.log(req.body)
-    db.insert(req.body, function (err, newDoc) {   // Callback is optional
-        // newDoc is the newly inserted document, including its _id
-        // newDoc has no key called notToBeSaved since its value was undefined
-      });
+app.post('/personFormSubmin', (req, res) => {
+    people.insert(req.body, function (err, newDoc) {
+        if (err)
+            console.log(err)
+    });
     res.sendStatus(200);
 })
 
