@@ -9,7 +9,7 @@ export default class PeopleList extends React.Component {
     render() {
         return (
             <h1>
-                PeopleList
+                PeopleListd
             </h1>
         )
     }
