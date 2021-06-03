@@ -37,13 +37,26 @@
   }
 }
 
-.my-header{
-  position:fixed;
-  top:20px;
+.my-header {
+  position: fixed;
+  top: 20px;
 }
 
 table, th, td {
   border: 1px solid silver;
   border-collapse: collapse;
   padding: 4px;
+}
+
+.copyText {
+  color: blue;
+  text-decoration: underline;
+}
+
+.copyText:hover {
+  cursor: pointer;
+}
+
+.copyText:active {
+  color: green;
 }

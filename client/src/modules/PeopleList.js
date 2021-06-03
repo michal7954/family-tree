@@ -53,7 +53,7 @@ class Row extends React.Component {
                 <td>{this.props.person.phoneNumber}</td>
                 <td>{this.props.person.emailAddress}</td>
                 <td>{this.props.person.residencePlace}</td>
-                <td>{this.props.person._id}</td>
+                <td className="copyText" onClick={() => { navigator.clipboard.writeText(this.props.person._id) }}>{this.props.person._id}</td>
             </tr>
         )
     }
