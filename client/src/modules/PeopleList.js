@@ -38,11 +38,8 @@ export default class PeopleList extends React.Component {
                     <thead>
                         <tr>
                             <th><button onClick={this.addPerson}>Dodaj</button></th>
-                            <th>Imię</th>
-                            <th>Opis</th>
-                            <th>Nr telefonu</th>
-                            <th>E-mail</th>
-                            <th>Miejsce zamieszkania</th>
+                            <th>Imię i nazwisko</th>
+                            <th>Lata życia</th>
                             <th>ID</th>
                         </tr>
                     </thead>
@@ -50,7 +47,6 @@ export default class PeopleList extends React.Component {
                         {rows}
                     </tbody>
                 </table>
-
             </div>
         )
     }
@@ -58,14 +54,24 @@ export default class PeopleList extends React.Component {
 
 class Row extends React.Component {
     render() {
+        let birthYear = "None", deathYear = "None"
+
+        this.props.person.lifeEvents.forEach(event => {
+            if (event.type === "birth")
+                birthYear = event.date.slice(0, 4)
+
+            if (event.type === "death")
+                deathYear = event.date.slice(0, 4)
+        });
+
+        if (this.props.person.isAlive)
+            deathYear="..."
+
         return (
             <tr>
-                <td>{this.props.person.name}</td>
-                <td>{this.props.person.surname}</td>
-                <td>{this.props.person.description}</td>
-                <td>{this.props.person.phoneNumber}</td>
-                <td>{this.props.person.emailAddress}</td>
-                <td>{this.props.person.residencePlace}</td>
+                <td><Link to={"/personForm/" + this.props.person._id}>Szczegóły</Link></td>
+                <td>{this.props.person.name} {this.props.person.surname}</td>
+                <td>{birthYear}-{deathYear}</td>
                 <td className="copyText" onClick={() => { navigator.clipboard.writeText(this.props.person._id) }}>{this.props.person._id}</td>
             </tr>
         )
