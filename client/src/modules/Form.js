@@ -18,8 +18,7 @@ export default class Form extends React.Component {
                 phoneNumber: '',
                 emailAddress: '',
                 residencePlace: ''
-            },
-            eventsNumber: 0
+            }
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -27,6 +26,14 @@ export default class Form extends React.Component {
         this.addLifeEventSection = this.addLifeEventSection.bind(this);
         this.handleLifeEventSectionInputChange = this.handleLifeEventSectionInputChange.bind(this)
         this.removeLifeEventSection = this.removeLifeEventSection.bind(this)
+    }
+
+    componentDidMount() {
+        const { match: { params } } = this.props;
+        const id = params.id
+        fetch('http://localhost:4000/person/' + id)
+            .then(response => response.json())
+            .then(data => this.setState({ formData: data }));
     }
 
     handleInputChange(event) {
@@ -50,33 +57,13 @@ export default class Form extends React.Component {
             },
             body: data
         })
-
-        // czyszczenie pól po wysłaniu
-        // this.setState({
-        //     formData: {
-        //         name: '',
-        //         surname: '',
-        //         isAlive: false,
-        //         gender: 'm',
-        //         description: '',
-        //         mother: '',
-        //         father: '',
-        //         // children: [],
-        //         lifeEvents: [],
-        //         phoneNumber: '',
-        //         emailAddress: '',
-        //         residencePlace: ''
-        //     },
-        //     eventsNumber: 0
-        // });
+            .then(() => this.props.history.push("/peopleList"));
 
         event.preventDefault();
     }
 
     addLifeEventSection(event) {
-
         this.setState(prevState => ({
-            eventsNumber: prevState.eventsNumber + 1,
             formData: {
                 ...prevState.formData,
                 lifeEvents: [
@@ -118,7 +105,6 @@ export default class Form extends React.Component {
             newLifeEvents.splice(index, 1);
 
         this.setState(prevState => ({
-            eventsNumber: prevState.eventsNumber - 1,
             formData: {
                 ...prevState.formData,
                 lifeEvents: newLifeEvents
@@ -131,7 +117,7 @@ export default class Form extends React.Component {
     render() {
 
         const events = this.state.formData.lifeEvents.map((element, index) =>
-            <LifeEventSection values={element} removeLifeEventSection={this.removeLifeEventSection} onInputChange={this.handleLifeEventSectionInputChange} eventIndex={index} />
+            <LifeEventSection key={index} values={element} removeLifeEventSection={this.removeLifeEventSection} onInputChange={this.handleLifeEventSectionInputChange} eventIndex={index} />
         )
 
         return (
@@ -139,17 +125,16 @@ export default class Form extends React.Component {
                 Wprowadź dane osoby<br />
                 <label>Imię: <input type="text" name="name" value={this.state.formData.name} onChange={this.handleInputChange} /></label><br />
                 <label>Nazwisko: <input type="text" name="surname" value={this.state.formData.surname} onChange={this.handleInputChange} /></label><br />
-                <label>Żyjąca: <input type="checkbox" name="isAlive" value={this.state.formData.isAlive} onChange={this.handleInputChange} /></label><br />
+                <label>Żyjąca: <input type="checkbox" name="isAlive" checked={this.state.formData.isAlive} value={this.state.formData.isAlive} onChange={this.handleInputChange} /></label><br />
 
-                <div onChange={this.handleInputChange}>
-                    Płeć:
-                <label><input type="radio" name="gender" value="w" />kobieta</label>
-                    <label><input type="radio" name="gender" value="m" defaultChecked />mężczyzna</label><br />
-                </div>
+                Płeć:
+                <label><input type="radio" name="gender" onChange={this.handleInputChange} value="w" checked={this.state.formData.gender === "w" ? true : false} />kobieta</label>
+                <label><input type="radio" name="gender" onChange={this.handleInputChange} value="m" checked={this.state.formData.gender === "m" ? true : false} />mężczyzna</label><br />
 
                 <label>Opis: <textarea name="description" value={this.state.formData.description} onChange={this.handleInputChange} /></label><br />
                 <label>Matka: <input type="text" name="mother" value={this.state.formData.mother} onChange={this.handleInputChange} /></label><br />
                 <label>Ojciec: <input type="text" name="father" value={this.state.formData.father} onChange={this.handleInputChange} /></label><br />
+                
                 {
                     this.state.formData.isAlive
                         ?
@@ -160,8 +145,10 @@ export default class Form extends React.Component {
                         </div>
                         : <div></div>
                 }
-                <button onClick={this.addLifeEventSection}>Dodaj kolejne wydarzenie z życia: {this.state.eventsNumber}</button><br />
+
+                <button onClick={this.addLifeEventSection}>Dodaj wydarzenie z życia</button><br />
                 {events}
+                
                 <input type="submit" value="Wyślij" />
             </form>
         );

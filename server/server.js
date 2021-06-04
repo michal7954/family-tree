@@ -20,24 +20,55 @@ people.loadDatabase();
 graves.loadDatabase();
 cemeteries.loadDatabase();
 
+const personTemplate = {
+    name: '',
+    surname: '',
+    isAlive: false,
+    gender: 'm',
+    description: '',
+    mother: '',
+    father: '',
+    // children: [],
+    lifeEvents: [],
+    phoneNumber: '',
+    emailAddress: '',
+    residencePlace: ''
+}
+
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.post('/personFormSubmin', (req, res) => {
-    people.insert(req.body, function (err, newDoc) {
-        if (err)
-            console.log(err)
+app.get('/person/:id', (req, res) => {
+    people.findOne({ _id: req.params.id }, function (err, doc) {
+        res.send(doc)
     });
-    res.sendStatus(200);
+})
+
+app.post('/personFormSubmin', (req, res) => {
+    people.update({ _id: req.body._id }, req.body, { multi: false }, function (err, numReplaced) {
+        res.sendStatus(200);
+    });
 })
 
 app.get('/peopleList', (req, res) => {
-    
+
     people.find({}, function (err, docs) {
         res.send(docs)
-      });
+    });
+})
+
+app.get('/addPerson', (req, res) => {
+
+    people.insert(personTemplate, function (err, newDoc) {
+        // if (err)
+        //     console.log(err)
+        // console.log(newDoc._id)
+        res.send(newDoc._id)
+    });
+    // res.sendStatus(200);
+
 })
 
 app.listen(port, () => {

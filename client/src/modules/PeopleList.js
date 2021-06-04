@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 export default class PeopleList extends React.Component {
 
@@ -7,35 +8,47 @@ export default class PeopleList extends React.Component {
         this.state = {
             peopleData: []
         }
+
+        this.addPerson = this.addPerson.bind(this);
     }
 
     componentDidMount() {
         fetch('http://localhost:4000/peopleList')
             .then(response => response.json())
-            .then(data => {
-                this.setState({ peopleData: data })
-            });
+            .then(data => this.setState({ peopleData: data }));
     }
 
-    render() {
-        const rows = this.state.peopleData.map(person => {
+    addPerson(event) {
+        console.log("add");
+        fetch('http://localhost:4000/addPerson')
+            .then(response => response.text())
+            .then(data => this.props.history.push("/personForm/" + data));
 
-            return <Row person={person} />
-        })
+        event.preventDefault()
+    }
+
+
+    render() {
+        const rows = this.state.peopleData.map(person => <Row key={person._id} person={person} />)
+
         return (
             <div>
                 PeopleList
                 <table>
-                    <tr>
-                        <th>Imię</th>
-                        <th>Nazwisko</th>
-                        <th>Opis</th>
-                        <th>Nr telefonu</th>
-                        <th>E-mail</th>
-                        <th>Miejsce zamieszkania</th>
-                        <th>ID</th>
-                    </tr>
-                    {rows}
+                    <thead>
+                        <tr>
+                            <th><button onClick={this.addPerson}>Dodaj</button></th>
+                            <th>Imię</th>
+                            <th>Opis</th>
+                            <th>Nr telefonu</th>
+                            <th>E-mail</th>
+                            <th>Miejsce zamieszkania</th>
+                            <th>ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
                 </table>
 
             </div>
