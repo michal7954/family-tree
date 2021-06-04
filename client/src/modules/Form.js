@@ -26,6 +26,7 @@ export default class Form extends React.Component {
         this.addLifeEventSection = this.addLifeEventSection.bind(this);
         this.handleLifeEventSectionInputChange = this.handleLifeEventSectionInputChange.bind(this)
         this.removeLifeEventSection = this.removeLifeEventSection.bind(this)
+        this.handleRemove = this.handleRemove.bind(this)
     }
 
     componentDidMount() {
@@ -56,6 +57,19 @@ export default class Form extends React.Component {
                 'Content-type': 'application/json'
             },
             body: data
+        })
+            .then(() => this.props.history.push("/peopleList"));
+
+        event.preventDefault();
+    }
+
+    handleRemove(event) {
+        fetch('http://localhost:4000/personRemove', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ _id: this.state.formData._id })
         })
             .then(() => this.props.history.push("/peopleList"));
 
@@ -122,7 +136,9 @@ export default class Form extends React.Component {
 
         return (
             <form onSubmit={this.handleSubmit}>
+
                 Wprowadź dane osoby<br />
+                <button onClick={this.handleRemove}>Usuń osobę</button><br />
                 <label>Imię: <input type="text" name="name" value={this.state.formData.name} onChange={this.handleInputChange} /></label><br />
                 <label>Nazwisko: <input type="text" name="surname" value={this.state.formData.surname} onChange={this.handleInputChange} /></label><br />
                 <label>Żyjąca: <input type="checkbox" name="isAlive" checked={this.state.formData.isAlive} value={this.state.formData.isAlive} onChange={this.handleInputChange} /></label><br />
@@ -134,7 +150,7 @@ export default class Form extends React.Component {
                 <label>Opis: <textarea name="description" value={this.state.formData.description} onChange={this.handleInputChange} /></label><br />
                 <label>Matka: <input type="text" name="mother" value={this.state.formData.mother} onChange={this.handleInputChange} /></label><br />
                 <label>Ojciec: <input type="text" name="father" value={this.state.formData.father} onChange={this.handleInputChange} /></label><br />
-                
+
                 {
                     this.state.formData.isAlive
                         ?
@@ -148,7 +164,7 @@ export default class Form extends React.Component {
 
                 <button onClick={this.addLifeEventSection}>Dodaj wydarzenie z życia</button><br />
                 {events}
-                
+
                 <input type="submit" value="Wyślij" />
             </form>
         );

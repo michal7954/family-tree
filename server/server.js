@@ -52,6 +52,12 @@ app.post('/personFormSubmin', (req, res) => {
     });
 })
 
+app.post('/personRemove', (req, res) => {
+    people.remove({ _id: req.body._id }, { multi: false }, function (err, numRemoved) {
+        res.sendStatus(200);
+    });
+})
+
 app.get('/peopleList', (req, res) => {
 
     people.find({}, function (err, docs) {
@@ -60,15 +66,9 @@ app.get('/peopleList', (req, res) => {
 })
 
 app.get('/addPerson', (req, res) => {
-
     people.insert(personTemplate, function (err, newDoc) {
-        // if (err)
-        //     console.log(err)
-        // console.log(newDoc._id)
         res.send(newDoc._id)
     });
-    // res.sendStatus(200);
-
 })
 
 app.listen(port, () => {

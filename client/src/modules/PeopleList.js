@@ -19,7 +19,6 @@ export default class PeopleList extends React.Component {
     }
 
     addPerson(event) {
-        console.log("add");
         fetch('http://localhost:4000/addPerson')
             .then(response => response.text())
             .then(data => this.props.history.push("/personForm/" + data));
@@ -65,7 +64,7 @@ class Row extends React.Component {
         });
 
         if (this.props.person.isAlive)
-            deathYear="..."
+            deathYear = "..."
 
         return (
             <tr>
