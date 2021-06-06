@@ -16,7 +16,7 @@ export default function App() {
                 <Router>
                     <header className="my-header">
                         <nav>
-                            <Link to="/">Home</Link> <Link to="/peopleList">People List</Link>
+                            <Link to="/">Home</Link> <Link to="/peopleList">Osoby</Link>
                         </nav>
                     </header>
                     <Switch>
@@ -31,5 +31,5 @@ export default function App() {
 }
 
 function Home() {
-    return <h2>Welcome!</h2>;
+    return <h2>Witaj!</h2>;
 }

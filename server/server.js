@@ -88,7 +88,7 @@ app.post('/personRemove', (req, res) => {
         people.update({ _id: doc.father }, { $pull: { children: req.body._id } }, { multi: false }, function () { });
 
         doc.children.forEach(childId => {
-            if (doc.gender == 'f')
+            if (doc.gender == 'w')
                 people.update({ _id: childId }, { $set: { mother: '' } }, { multi: false }, function () { });
             else
                 people.update({ _id: childId }, { $set: { father: '' } }, { multi: false }, function () { });

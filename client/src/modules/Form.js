@@ -64,14 +64,18 @@ export default class Form extends React.Component {
     }
 
     handleRemove(event) {
-        fetch('http://localhost:4000/personRemove', {
-            method: "POST",
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({ _id: this.state.formData._id })
-        })
-            .then(() => this.props.history.push("/peopleList"));
+
+        if (window.confirm("Czy na pewno usunąć?")) {
+            fetch('http://localhost:4000/personRemove', {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({ _id: this.state.formData._id })
+            })
+                .then(() => this.props.history.push("/peopleList"));
+        }
+
 
         event.preventDefault();
     }
@@ -85,7 +89,7 @@ export default class Form extends React.Component {
                     {
                         type: "any",
                         date: "",
-                        place: "",
+                        info: "",
                     },
                 ]
             }
@@ -130,8 +134,8 @@ export default class Form extends React.Component {
 
     render() {
 
-        const events = this.state.formData.lifeEvents.map((element, index) =>
-            <LifeEventSection key={index} values={element} removeLifeEventSection={this.removeLifeEventSection} onInputChange={this.handleLifeEventSectionInputChange} eventIndex={index} />
+        const events = this.state.formData.lifeEvents.map((lifeEvent, index) =>
+            <LifeEventSection key={index} values={lifeEvent} removeLifeEventSection={this.removeLifeEventSection} onInputChange={this.handleLifeEventSectionInputChange} eventIndex={index} />
         )
 
         return (
@@ -183,8 +187,8 @@ class LifeEventSection extends React.Component {
                     <option value="death">Śmierć</option>
                     <option value="funeral">Pogrzeb</option>
                 </select>
-                <label><input type="date" name="date" value={this.props.values.date} onChange={event => this.props.onInputChange(event, this.props.eventIndex)} /></label>
-                <label><input type="text" name="place" value={this.props.values.place} onChange={event => this.props.onInputChange(event, this.props.eventIndex)} /></label>
+                <label><input type="text" name="date" placeholder="RRRR-MM-DD" value={this.props.values.date} onChange={event => this.props.onInputChange(event, this.props.eventIndex)} /></label>
+                <label><input type="text" name="info" placeholder="info" value={this.props.values.info} onChange={event => this.props.onInputChange(event, this.props.eventIndex)} /></label>
                 <button onClick={event => this.props.removeLifeEventSection(event, this.props.eventIndex)}>Usuń</button>
                 <br />
             </span>
