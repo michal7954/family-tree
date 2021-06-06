@@ -28,7 +28,7 @@ const personTemplate = {
     description: '',
     mother: '',
     father: '',
-    // children: [],
+    children: [],
     lifeEvents: [],
     phoneNumber: '',
     emailAddress: '',
@@ -38,24 +38,6 @@ const personTemplate = {
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
-})
-
-app.get('/person/:id', (req, res) => {
-    people.findOne({ _id: req.params.id }, function (err, doc) {
-        res.send(doc)
-    });
-})
-
-app.post('/personFormSubmin', (req, res) => {
-    people.update({ _id: req.body._id }, req.body, { multi: false }, function (err, numReplaced) {
-        res.sendStatus(200);
-    });
-})
-
-app.post('/personRemove', (req, res) => {
-    people.remove({ _id: req.body._id }, { multi: false }, function (err, numRemoved) {
-        res.sendStatus(200);
-    });
 })
 
 app.get('/peopleList', (req, res) => {
@@ -71,6 +53,53 @@ app.get('/addPerson', (req, res) => {
     });
 })
 
+app.get('/person/:id', (req, res) => {
+    people.findOne({ _id: req.params.id }, function (err, doc) {
+        res.send(doc)
+    });
+})
+
+app.post('/personFormSubmin', (req, res) => {
+
+    people.findOne({ _id: req.body._id }, function (err, doc) {
+
+        if (doc.mother != req.body.mother) {
+            people.update({ _id: doc.mother }, { $pull: { children: req.body._id } }, { multi: false }, function () { });
+            people.update({ _id: req.body.mother }, { $addToSet: { children: req.body._id } }, { multi: false }, function (err, numReplaced) { });
+        }
+
+        if (doc.father != req.body.father) {
+            people.update({ _id: doc.father }, { $pull: { children: req.body._id } }, { multi: false }, function () { });
+            people.update({ _id: req.body.father }, { $addToSet: { children: req.body._id } }, { multi: false }, function (err, numReplaced) { });
+        }
+
+        people.update({ _id: req.body._id }, req.body, { multi: false }, function (err, numReplaced) {
+            res.sendStatus(200);
+        });
+    });
+
+})
+
+app.post('/personRemove', (req, res) => {
+
+    people.findOne({ _id: req.body._id }, function (err, doc) {
+
+        people.update({ _id: doc.mother }, { $pull: { children: req.body._id } }, { multi: false }, function () { });
+        people.update({ _id: doc.father }, { $pull: { children: req.body._id } }, { multi: false }, function () { });
+
+        doc.children.forEach(childId => {
+            if (doc.gender == 'f')
+                people.update({ _id: childId }, { $set: { mother: '' } }, { multi: false }, function () { });
+            else
+                people.update({ _id: childId }, { $set: { father: '' } }, { multi: false }, function () { });
+        });
+
+        people.remove({ _id: req.body._id }, { multi: false }, function (err, numRemoved) {
+            res.sendStatus(200);
+        });
+    });
+})
+
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`App listening at http://localhost:${port}`)
 })

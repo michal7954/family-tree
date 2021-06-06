@@ -13,7 +13,7 @@ export default class Form extends React.Component {
                 description: '',
                 mother: '',
                 father: '',
-                // children: [],
+                children: [],
                 lifeEvents: [],
                 phoneNumber: '',
                 emailAddress: '',
