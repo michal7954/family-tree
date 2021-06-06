@@ -1,9 +1,20 @@
+Frontend:
+input danych do tabel
+wyświetlenie danych tabelarycznie + filtrowanie
+lista dzieci w szczegółach
+nagrobki
+cmentarze ale nie jako osobna tabela
+import zdjęć
+sortowanie w tabeli wg czasu dodania
+
+
+opcjonalne/przyszłość:
+przycisk włączający edycję formularza
+rysowanie drzew genealogicznych + dodatkowe ograniczenia (np. linia męska)
+relacja ślubu
+tablica cmentarzy
+
 Kwestie:
 hosting
 bezpieczne logowanie i przesyłanie danych client-server
 eksport danych do uniwersalnego formatu
-
-frontend:
-input danych do tabel
-wyświetlenie danych tabelarycznie + filtrowanie
-rysowanie drzew genealogicznych + dodatkowe ograniczenia (np. linia męska)

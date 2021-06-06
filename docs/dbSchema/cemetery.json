@@ -1,7 +1,8 @@
+// obecnie nieużywane
 {
-    "id": "",
+    "_id": "",
     "name": "",
-    "address": "address.json",
+    "address": "",
     "graves": [
         "grave.id"
     ]

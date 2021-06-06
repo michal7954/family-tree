@@ -1,5 +1,5 @@
 {
-    "id": "",
+    "_id": "",
     "name": "",
     "surname": "",
     "isAlive":"",
@@ -8,46 +8,39 @@
     "lifeEvents": [
         {
             "type": "birth",
-            "date": "date.json",
-            "place": ""
+            "date": "date",
+            "info": "place"
         },
         {
             "type": "death",
-            "date": "date.json",
-            "place": ""
+            "date": "date",
+            "info": "place"
         },
         {
             "type": "marriage",
-            "date": "date.json",
-            "place": ""
+            "date": "date",
+            "info": "place"
         },
         {
             "type": "baptism",
-            "date": "date.json",
-            "place": ""
+            "date": "date",
+            "info": "place"
         },
         {
             "type": "funeral",
-            "date": "date.json",
-            "grave": "grave.id"
+            "date": "date",
+            "info": "grave.id"
         },
         {
             "type": "any",
-            "description": "",
-            "date": "date.json"
+            "date": "date",
+            "info": "description"            
         }
     ],
     "mother": "person.id",
     "father": "person.id",
     "children": [
         "person.id"
-    ],
-    "otherRelations":[
-        {
-            "type":"",
-            "description":"",
-            "person":"person.id"
-        }
     ],
     "photo":"img",
     "phoneNumber":"",
