@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Form extends React.Component {
+export default class PersonForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -169,7 +169,7 @@ export default class Form extends React.Component {
                 <button onClick={this.addLifeEventSection}>Dodaj wydarzenie z życia</button><br />
                 {events}
 
-                <input type="submit" value="Wyślij" />
+                <input type="submit" value="Zapisz" />
             </form>
         );
     }

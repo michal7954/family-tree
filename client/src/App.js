@@ -1,6 +1,3 @@
-import './App.css';
-import Form from './modules/Form'
-import PeopleList from './modules/PeopleList'
 import React from "react";
 import {
     BrowserRouter as Router,
@@ -8,6 +5,12 @@ import {
     Route,
     Link
 } from "react-router-dom";
+
+import './App.css';
+import PersonForm from './components/People/PersonForm'
+import PeopleList from './components/People/PeopleList'
+import List from "./components/UI/List";
+
 
 export default function App() {
     return (
@@ -19,8 +22,9 @@ export default function App() {
                             <Link to="/">Home</Link> <Link to="/peopleList">Osoby</Link>
                         </nav>
                     </header>
+                    <List></List>
                     <Switch>
-                        <Route path="/personForm/:id" component={Form} />
+                        <Route path="/personForm/:id" component={PersonForm} />
                         <Route path="/peopleList" component={PeopleList} />
                         <Route path="/" component={Home} />
                     </Switch>
