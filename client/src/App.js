@@ -9,7 +9,6 @@ import {
 import './App.css';
 import PersonForm from './components/People/PersonForm'
 import PeopleList from './components/People/PeopleList'
-import List from "./components/UI/List";
 
 
 export default function App() {
@@ -22,7 +21,6 @@ export default function App() {
                             <Link to="/">Home</Link> <Link to="/peopleList">Osoby</Link>
                         </nav>
                     </header>
-                    <List></List>
                     <Switch>
                         <Route path="/personForm/:id" component={PersonForm} />
                         <Route path="/peopleList" component={PeopleList} />
