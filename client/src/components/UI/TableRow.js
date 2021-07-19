@@ -1,21 +1,27 @@
 import { Link } from "react-router-dom";
 
-const TableRow = props => {
+const TableRow = (props) => {
+    const idCopyHandler = () => {
+        navigator.clipboard.writeText(props.data._id);
+    };
 
-    const length = props.data.length
-
-    const fields = props.data
-        .filter((field, index) => index < length - 1)
-        .map((field, index) => <td key={index}>{field}</td>)
+    const fields = props.keys.map((key) => (
+        <td key={key}>{props.data[key]}</td>
+    ));
 
     return (
         <tr>
-            <td><Link to={"/personForm/" + props.data[2]}>Szczegóły</Link></td>
+            <td>
+                <Link to={props.detailsAddress + props.data._id}>
+                    Szczegóły
+                </Link>
+            </td>
             {fields}
-            <td className="copyText" onClick={() => { navigator.clipboard.writeText(props.data[length-1]) }}>{props.data[length-1]}</td>
+            <td className="copyText" onClick={idCopyHandler}>
+                {props.data._id}
+            </td>
         </tr>
-    )
+    );
+};
 
-}
-
-export default TableRow
+export default TableRow;
