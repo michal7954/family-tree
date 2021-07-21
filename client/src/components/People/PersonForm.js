@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 
 import FormField from "../UI/FormField";
 import LifeEventSection from "./LifeEventSection";
+import request from "../../helpers/http";
 
 const lifeEventsReducer = (data, action) => {
     let clone = JSON.parse(JSON.stringify(data));
@@ -52,7 +53,7 @@ const PersonForm = (props) => {
         value: isAlive,
         setValue: setIsAlive,
         bind: bindIsAlive,
-    } = useInput("",true);
+    } = useInput("", true);
     const {
         value: gender,
         setValue: setGender,
@@ -92,23 +93,25 @@ const PersonForm = (props) => {
     const [lifeEvents, dispatchLifeEvents] = useReducer(lifeEventsReducer, []);
 
     useEffect(() => {
-        fetch("http://localhost:4000/person/" + id)
-            .then((response) => response.json())
-            .then((data) => {
-                formData.current = data;
+        request({
+            type: "get",
+            source: "people",
+            _id: id,
+        }).then((data) => {
+            formData.current = data;
 
-                setName(data.name);
-                setSurname(data.surname);
-                setIsAlive(data.isAlive);
-                setDescription(data.description);
-                setMother(data.mother);
-                setFather(data.father);
-                setPhoneNumber(data.phoneNumber);
-                setEmailAddress(data.emailAddress);
-                setResidencePlace(data.residencePlace);
-                setGender(data.gender);
-                dispatchLifeEvents({ type: "set", data: data.lifeEvents });
-            });
+            setName(data.name);
+            setSurname(data.surname);
+            setIsAlive(data.isAlive);
+            setDescription(data.description);
+            setMother(data.mother);
+            setFather(data.father);
+            setPhoneNumber(data.phoneNumber);
+            setEmailAddress(data.emailAddress);
+            setResidencePlace(data.residencePlace);
+            setGender(data.gender);
+            dispatchLifeEvents({ type: "set", data: data.lifeEvents });
+        });
     }, [
         id,
         props,
@@ -135,19 +138,6 @@ const PersonForm = (props) => {
         />
     ));
 
-    // function handleSubmit(event) {
-    //     var data = JSON.stringify(this.state.formData);
-    //     fetch("http://localhost:4000/personFormSubmin", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-type": "application/json",
-    //         },
-    //         body: data,
-    //     }).then(() => this.props.history.push("/peopleList"));
-
-    //     event.preventDefault();
-    // }
-
     const addNextEventHandler = (event) => {
         event.preventDefault();
         dispatchLifeEvents({ type: "add" });
@@ -156,7 +146,7 @@ const PersonForm = (props) => {
     const submitHandler = (event) => {
         event.preventDefault();
 
-        const data = JSON.stringify({
+        const data = {
             _id: id,
             name,
             surname,
@@ -170,29 +160,23 @@ const PersonForm = (props) => {
             phoneNumber,
             emailAddress,
             residencePlace,
-        });
+        };
 
-        fetch("http://localhost:4000/personFormSubmin", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-            },
-            body: data,
+        request({
+            type: "update",
+            source: "people",
+            data,
         }).then(() => history.push("/peopleList"));
-
-        event.preventDefault();
     };
 
     const removeHandler = (event) => {
         event.preventDefault();
 
         if (window.confirm("Czy na pewno usunąć?")) {
-            fetch("http://localhost:4000/personRemove", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify({ _id: id }),
+            request({
+                type: "remove",
+                source: "people",
+                _id: id,
             }).then(() => history.push("/peopleList"));
         }
     };

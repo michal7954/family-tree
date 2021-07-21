@@ -1,0 +1,6 @@
+POST.body = {
+    type: [getAll, search?, create, get, update, remove],
+    source: [people, graves, cemeteries],
+    _id (required for [get, remove]),
+    data (required for [update])
+}
