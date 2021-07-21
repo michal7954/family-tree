@@ -1,197 +1,290 @@
-import React from 'react';
+import { useEffect, useReducer, useRef } from "react";
+import { useInput } from "../../hooks/use-input";
+import { useRadio } from "../../hooks/use-radio";
+import { useHistory } from "react-router-dom";
 
-export default class PersonForm extends React.Component {
-    constructor(props) {
-        super(props);
+import FormField from "../UI/FormField";
+import LifeEventSection from "./LifeEventSection";
 
-        this.state = {
-            formData: {
-                name: '',
-                surname: '',
-                isAlive: false,
-                gender: 'm',
-                description: '',
-                mother: '',
-                father: '',
-                children: [],
-                lifeEvents: [],
-                phoneNumber: '',
-                emailAddress: '',
-                residencePlace: ''
-            }
-        }
+const lifeEventsReducer = (data, action) => {
+    let clone = JSON.parse(JSON.stringify(data));
 
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.addLifeEventSection = this.addLifeEventSection.bind(this);
-        this.handleLifeEventSectionInputChange = this.handleLifeEventSectionInputChange.bind(this)
-        this.removeLifeEventSection = this.removeLifeEventSection.bind(this)
-        this.handleRemove = this.handleRemove.bind(this)
+    switch (action.type) {
+        case "set":
+            return action.data;
+        case "add":
+            return [...clone, { type: "", date: "", info: "" }];
+        case "delete":
+            clone.splice(action.index, 1);
+            return clone;
+        case "updateType":
+            clone[action.index].type = action.value;
+            return clone;
+        case "updateDate":
+            clone[action.index].date = action.value;
+            return clone;
+        case "updateInfo":
+            clone[action.index].info = action.value;
+            return clone;
+        default:
+            return clone;
     }
+};
 
-    componentDidMount() {
-        const { match: { params } } = this.props;
-        const id = params.id
-        fetch('http://localhost:4000/person/' + id)
-            .then(response => response.json())
-            .then(data => this.setState({ formData: data }));
-    }
+const PersonForm = (props) => {
+    let formData = useRef();
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        this.setState(prevState => ({
-            formData: {
-                ...prevState.formData,
-                [name]: value
-            }
-        }));
-    }
+    const {
+        match: {
+            params: { id },
+        },
+    } = props;
 
-    handleSubmit(event) {
-        var data = JSON.stringify(this.state.formData)
-        fetch('http://localhost:4000/personFormSubmin', {
+    const history = useHistory();
+
+    const { value: name, setValue: setName, bind: bindName } = useInput("");
+    const {
+        value: surname,
+        setValue: setSurname,
+        bind: bindSurname,
+    } = useInput("");
+    const {
+        value: isAlive,
+        setValue: setIsAlive,
+        bind: bindIsAlive,
+    } = useInput("",true);
+    const {
+        value: gender,
+        setValue: setGender,
+        bind: bindGender,
+    } = useRadio("");
+    const {
+        value: description,
+        setValue: setDescription,
+        bind: bindDescription,
+    } = useInput("");
+    const {
+        value: mother,
+        setValue: setMother,
+        bind: bindMother,
+    } = useInput("");
+    const {
+        value: father,
+        setValue: setFather,
+        bind: bindFather,
+    } = useInput("");
+    const {
+        value: phoneNumber,
+        setValue: setPhoneNumber,
+        bind: bindPhoneNumber,
+    } = useInput("");
+    const {
+        value: emailAddress,
+        setValue: setEmailAddress,
+        bind: bindEmailAddress,
+    } = useInput("");
+    const {
+        value: residencePlace,
+        setValue: setResidencePlace,
+        bind: bindResidencePlace,
+    } = useInput("");
+
+    const [lifeEvents, dispatchLifeEvents] = useReducer(lifeEventsReducer, []);
+
+    useEffect(() => {
+        fetch("http://localhost:4000/person/" + id)
+            .then((response) => response.json())
+            .then((data) => {
+                formData.current = data;
+
+                setName(data.name);
+                setSurname(data.surname);
+                setIsAlive(data.isAlive);
+                setDescription(data.description);
+                setMother(data.mother);
+                setFather(data.father);
+                setPhoneNumber(data.phoneNumber);
+                setEmailAddress(data.emailAddress);
+                setResidencePlace(data.residencePlace);
+                setGender(data.gender);
+                dispatchLifeEvents({ type: "set", data: data.lifeEvents });
+            });
+    }, [
+        id,
+        props,
+        setName,
+        setSurname,
+        setIsAlive,
+        setDescription,
+        setMother,
+        setFather,
+        setPhoneNumber,
+        setEmailAddress,
+        setResidencePlace,
+        setGender,
+    ]);
+
+    const events = lifeEvents.map((lifeEvent, index) => (
+        <LifeEventSection
+            key={index}
+            type={lifeEvent.type}
+            date={lifeEvent.date}
+            info={lifeEvent.info}
+            dispatch={dispatchLifeEvents}
+            eventIndex={index}
+        />
+    ));
+
+    // function handleSubmit(event) {
+    //     var data = JSON.stringify(this.state.formData);
+    //     fetch("http://localhost:4000/personFormSubmin", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-type": "application/json",
+    //         },
+    //         body: data,
+    //     }).then(() => this.props.history.push("/peopleList"));
+
+    //     event.preventDefault();
+    // }
+
+    const addNextEventHandler = (event) => {
+        event.preventDefault();
+        dispatchLifeEvents({ type: "add" });
+    };
+
+    const submitHandler = (event) => {
+        event.preventDefault();
+
+        const data = JSON.stringify({
+            _id: id,
+            name,
+            surname,
+            isAlive,
+            gender,
+            description,
+            mother,
+            father,
+            children: formData.current.children,
+            lifeEvents,
+            phoneNumber,
+            emailAddress,
+            residencePlace,
+        });
+
+        fetch("http://localhost:4000/personFormSubmin", {
             method: "POST",
             headers: {
-                'Content-type': 'application/json'
+                "Content-type": "application/json",
             },
-            body: data
-        })
-            .then(() => this.props.history.push("/peopleList"));
+            body: data,
+        }).then(() => history.push("/peopleList"));
 
         event.preventDefault();
-    }
+    };
 
-    handleRemove(event) {
+    const removeHandler = (event) => {
+        event.preventDefault();
 
         if (window.confirm("Czy na pewno usunąć?")) {
-            fetch('http://localhost:4000/personRemove', {
+            fetch("http://localhost:4000/personRemove", {
                 method: "POST",
                 headers: {
-                    'Content-type': 'application/json'
+                    "Content-type": "application/json",
                 },
-                body: JSON.stringify({ _id: this.state.formData._id })
-            })
-                .then(() => this.props.history.push("/peopleList"));
+                body: JSON.stringify({ _id: id }),
+            }).then(() => history.push("/peopleList"));
         }
+    };
 
-
-        event.preventDefault();
-    }
-
-    addLifeEventSection(event) {
-        this.setState(prevState => ({
-            formData: {
-                ...prevState.formData,
-                lifeEvents: [
-                    ...prevState.formData.lifeEvents,
-                    {
-                        type: "any",
-                        date: "",
-                        info: "",
-                    },
-                ]
-            }
-        }));
-
-        event.preventDefault();
-    }
-
-    handleLifeEventSectionInputChange(event, index) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-
-        let newLifeEvents = [...this.state.formData.lifeEvents]
-        newLifeEvents[index][name] = value
-
-        this.setState(prevState => ({
-            formData: {
-                ...prevState.formData,
-                lifeEvents: newLifeEvents
-            }
-        }));
-
-        event.preventDefault();
-    }
-
-    removeLifeEventSection(event, index) {
-
-        let newLifeEvents = [...this.state.formData.lifeEvents]
-        if (index > -1)
-            newLifeEvents.splice(index, 1);
-
-        this.setState(prevState => ({
-            formData: {
-                ...prevState.formData,
-                lifeEvents: newLifeEvents
-            }
-        }));
-
-        event.preventDefault();
-    }
-
-    render() {
-
-        const events = this.state.formData.lifeEvents.map((lifeEvent, index) =>
-            <LifeEventSection key={index} values={lifeEvent} removeLifeEventSection={this.removeLifeEventSection} onInputChange={this.handleLifeEventSectionInputChange} eventIndex={index} />
-        )
-
-        return (
-            <form onSubmit={this.handleSubmit}>
-
-                Wprowadź dane osoby<br />
-                <button onClick={this.handleRemove}>Usuń osobę</button><br />
-                <label>Imię: <input type="text" name="name" value={this.state.formData.name} onChange={this.handleInputChange} /></label><br />
-                <label>Nazwisko: <input type="text" name="surname" value={this.state.formData.surname} onChange={this.handleInputChange} /></label><br />
-                <label>Żyjąca: <input type="checkbox" name="isAlive" checked={this.state.formData.isAlive} value={this.state.formData.isAlive} onChange={this.handleInputChange} /></label><br />
-
+    return (
+        <form onSubmit={submitHandler}>
+            Formularz osoby
+            <br />
+            <button onClick={removeHandler}>Usuń osobę</button>
+            <FormField
+                name="name"
+                labelText="Imię: "
+                input={{ type: "text", ...bindName }}
+            />
+            <FormField
+                name="surname"
+                labelText="Nazwisko: "
+                input={{ type: "text", ...bindSurname }}
+            />
+            <FormField
+                name="isAlive"
+                labelText="Żyjąca: "
+                input={{
+                    type: "checkbox",
+                    ...bindIsAlive,
+                    checked: isAlive,
+                }}
+            />
+            <div>
                 Płeć:
-                <label><input type="radio" name="gender" onChange={this.handleInputChange} value="w" checked={this.state.formData.gender === "w" ? true : false} />kobieta</label>
-                <label><input type="radio" name="gender" onChange={this.handleInputChange} value="m" checked={this.state.formData.gender === "m" ? true : false} />mężczyzna</label><br />
+                <FormField
+                    name="gender"
+                    labelText="kobieta"
+                    input={{
+                        type: "radio",
+                        value: "w",
+                        ...bindGender,
+                        checked: gender === "w",
+                    }}
+                />
+                <FormField
+                    name="gender"
+                    labelText="mężczyzna"
+                    input={{
+                        type: "radio",
+                        value: "m",
+                        ...bindGender,
+                        checked: gender === "m",
+                    }}
+                />
+            </div>
+            <FormField
+                name="description"
+                labelText="Opis: "
+                input={{ type: "textarea", ...bindDescription }}
+            />
+            <FormField
+                name="mother"
+                labelText="Matka: "
+                input={{ type: "text", ...bindMother }}
+            />
+            <FormField
+                name="father"
+                labelText="Ojciec: "
+                input={{ type: "text", ...bindFather }}
+            />
+            {isAlive && (
+                <>
+                    <FormField
+                        name="phoneNumber"
+                        labelText="Telefon: "
+                        input={{ type: "text", ...bindPhoneNumber }}
+                    />
+                    <FormField
+                        name="emailAddress"
+                        labelText="E-mail: "
+                        input={{ type: "text", ...bindEmailAddress }}
+                    />
+                    <FormField
+                        name="residencePlace"
+                        labelText=" Miejsce zamieszkania: "
+                        input={{ type: "text", ...bindResidencePlace }}
+                    />
+                </>
+            )}
+            <button onClick={addNextEventHandler}>
+                Dodaj wydarzenie z życia
+            </button>
+            <div>{events}</div>
+            <input type="submit" value="Zapisz" />
+        </form>
+    );
+};
 
-                <label>Opis: <textarea name="description" value={this.state.formData.description} onChange={this.handleInputChange} /></label><br />
-                <label>Matka: <input type="text" name="mother" value={this.state.formData.mother} onChange={this.handleInputChange} /></label><br />
-                <label>Ojciec: <input type="text" name="father" value={this.state.formData.father} onChange={this.handleInputChange} /></label><br />
-
-                {
-                    this.state.formData.isAlive
-                        ?
-                        <div>
-                            <label>Telefon: <input type="text" name="phoneNumber" value={this.state.formData.phoneNumber} onChange={this.handleInputChange} /></label><br />
-                            <label>E-mail: <input type="text" name="emailAddress" value={this.state.formData.emailAddress} onChange={this.handleInputChange} /></label><br />
-                            <label>Miejsce zamieszkania: <input type="text" name="residencePlace" value={this.state.formData.residencePlace} onChange={this.handleInputChange} /></label><br />
-                        </div>
-                        : <div></div>
-                }
-
-                <button onClick={this.addLifeEventSection}>Dodaj wydarzenie z życia</button><br />
-                {events}
-
-                <input type="submit" value="Zapisz" />
-            </form>
-        );
-    }
-}
-
-class LifeEventSection extends React.Component {
-    render() {
-        return (
-            <span>
-                <select name="type" value={this.props.values.type} onChange={event => this.props.onInputChange(event, this.props.eventIndex)}>
-                    <option value="any">Dowolne</option>
-                    <option value="birth">Narodziny</option>
-                    <option value="baptism">Chrzest</option>
-                    <option value="marriage">Ślub</option>
-                    <option value="death">Śmierć</option>
-                    <option value="funeral">Pogrzeb</option>
-                </select>
-                <label><input type="text" name="date" placeholder="RRRR-MM-DD" value={this.props.values.date} onChange={event => this.props.onInputChange(event, this.props.eventIndex)} /></label>
-                <label><input type="text" name="info" placeholder="info" value={this.props.values.info} onChange={event => this.props.onInputChange(event, this.props.eventIndex)} /></label>
-                <button onClick={event => this.props.removeLifeEventSection(event, this.props.eventIndex)}>Usuń</button>
-                <br />
-            </span>
-        );
-    }
-}
+export default PersonForm;
