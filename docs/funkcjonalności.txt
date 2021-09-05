@@ -18,3 +18,10 @@ Kwestie:
 hosting
 bezpieczne logowanie i przesyłanie danych client-server
 eksport danych do uniwersalnego formatu
+
+TODO:
+-Wyświetlanie None kiedy data nie jest podana.
+-Ukrycie MARRIAGE - filtrowanie.
+-Wyświetlanie pierwszego zdania opisu gdy jest UNKNOWN.
+-Opis to textarea.
+-Scroll.

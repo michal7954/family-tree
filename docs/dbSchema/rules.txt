@@ -1,0 +1,4 @@
+-W bazie danych podawane jest nazwisko rodowe.
+-Małżeństwo bez znanych dzieci ma dziecko o name: MARRIAGE.
+-Imię to pole obowiązkowe. Jeżeli nieznane lub w domyśle name: UNKNOWN.
+-Oznaczenia dokładności daty. Mała litera: data przybliżona, wielka litera: data dokładna. [y, Y, YMD - brak]
