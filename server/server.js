@@ -16,9 +16,10 @@ app.use(
     })
 );
 
-const people = new Datastore({ filename: "./data/people.txt" });
-const graves = new Datastore({ filename: "./data/graves.txt" });
-const cemeteries = new Datastore({ filename: "./data/cemeteries.txt" });
+const dbPrefix = 'testDB';
+const people = new Datastore({ filename: `./data/${dbPrefix}/people.txt` });
+const graves = new Datastore({ filename: `./data/${dbPrefix}/graves.txt` });
+const cemeteries = new Datastore({ filename: `./data/${dbPrefix}/cemeteries.txt` });
 
 people.loadDatabase();
 graves.loadDatabase();
