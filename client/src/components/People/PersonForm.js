@@ -166,7 +166,7 @@ const PersonForm = (props) => {
             type: "update",
             source: "people",
             data,
-        }).then(() => history.push("/peopleList"));
+        }).then(() => history.push("/people"));
     };
 
     const removeHandler = (event) => {
@@ -177,7 +177,7 @@ const PersonForm = (props) => {
                 type: "remove",
                 source: "people",
                 _id: id,
-            }).then(() => history.push("/peopleList"));
+            }).then(() => history.push("/people"));
         }
     };
 

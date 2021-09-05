@@ -60,3 +60,7 @@ table, th, td {
 .copyText:active {
   color: green;
 }
+
+nav a{
+  margin:10px;
+}

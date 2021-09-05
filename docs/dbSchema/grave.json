@@ -1,8 +1,9 @@
 {
     "_id": "",
-    "localization": "",
+    "description": "",
     "graveImg": "img",
     "plaqueImg": "img",
+    "cemeteryId":"cemetery.id",
     "buriedList": [
         "person.id"
     ]

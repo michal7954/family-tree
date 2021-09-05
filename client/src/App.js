@@ -1,15 +1,13 @@
 import React from "react";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import './App.css';
-import PersonForm from './components/People/PersonForm'
-import PeopleList from './components/People/PeopleList'
-
+import "./App.css";
+import PeopleList from "./components/People/PeopleList";
+import PersonForm from "./components/People/PersonForm";
+import GravesList from "./components/Graves/GravesList";
+import GraveForm from "./components/Graves/GraveForm";
+import CemeteriesList from "./components/Cemeteries/CemeteriesList";
+import CemeteryForm from "./components/Cemeteries/CemeteryForm";
 
 export default function App() {
     return (
@@ -18,12 +16,19 @@ export default function App() {
                 <Router>
                     <header className="my-header">
                         <nav>
-                            <Link to="/">Home</Link> <Link to="/peopleList">Osoby</Link>
+                            <Link to="/">Home</Link>
+                            <Link to="/people">Osoby</Link>
+                            {/* <Link to="/graves">Nagrobki</Link>
+                            <Link to="/cemeteries">Cmentarze</Link> */}
                         </nav>
                     </header>
                     <Switch>
-                        <Route path="/personForm/:id" component={PersonForm} />
-                        <Route path="/peopleList" component={PeopleList} />
+                        <Route path="/people" component={PeopleList} />
+                        <Route path="/person/:id" component={PersonForm} />
+                        <Route path="/graves" component={GravesList} />
+                        <Route path="/grave/:id" component={GraveForm} />
+                        <Route path="/cemeteries" component={CemeteriesList} />
+                        <Route path="/cemetery/:id" component={CemeteryForm} />
                         <Route path="/" component={Home} />
                     </Switch>
                 </Router>

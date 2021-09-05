@@ -43,7 +43,7 @@ const PeopleList = (props) => {
             type:"create",
             source: "people"
         }).then((data)=>{
-            history.push("/personForm/" + data._id);
+            history.push("/person/" + data._id);
         });
 
         event.preventDefault();
@@ -54,13 +54,13 @@ const PeopleList = (props) => {
 
     return (
         <div>
-            PeopleList
+            Lista osób
             <Table
                 onAddClick={addPersonHandler}
                 headers={headers}
                 keys={keys}
                 data={peopleData}
-                detailsAddress="/personForm/"
+                detailsAddress="/person/"
             />
         </div>
     );
