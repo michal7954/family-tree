@@ -16,7 +16,7 @@ app.use(
     })
 );
 
-const dbPrefix = 'testDB';
+const dbPrefix = 'testDB_order';
 const people = new Datastore({ filename: `./data/${dbPrefix}/people.txt` });
 const graves = new Datastore({ filename: `./data/${dbPrefix}/graves.txt` });
 const cemeteries = new Datastore({ filename: `./data/${dbPrefix}/cemeteries.txt` });

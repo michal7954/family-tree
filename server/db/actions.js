@@ -11,6 +11,7 @@ const personTemplate = {
     phoneNumber: "",
     emailAddress: "",
     residencePlace: "",
+    creationDate: null,
 };
 
 const graveTemplate = {
@@ -36,7 +37,10 @@ const cemeteryTemplate = {
     module.exports.getAll = (sourceDB) => {
         return new Promise((resolve, reject) => {
             sourceDB.find({}, (err, docs) => {
-                resolve(docs);
+                const sorted = docs.sort((a, b)=>{
+                    return a.creationDate - b.creationDate;
+                  });
+                resolve(sorted);
             });
         });
     };
@@ -49,7 +53,11 @@ const cemeteryTemplate = {
 
     module.exports.createPerson = (sourceDB) => {
         return new Promise((resolve, reject) =>
-            sourceDB.insert(personTemplate, (err, newDoc) =>
+            sourceDB.insert({
+                ...personTemplate,
+                creationDate: new Date().valueOf(),
+            },
+                (err, newDoc) =>
                 resolve(newDoc._id)
             )
         );

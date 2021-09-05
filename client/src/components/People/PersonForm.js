@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { useInput } from "../../hooks/use-input";
 import { useRadio } from "../../hooks/use-radio";
 import { useHistory } from "react-router-dom";
@@ -89,6 +89,7 @@ const PersonForm = (props) => {
         setValue: setResidencePlace,
         bind: bindResidencePlace,
     } = useInput("");
+    const [creationDate, setCreationDate] = useState();
 
     const [lifeEvents, dispatchLifeEvents] = useReducer(lifeEventsReducer, []);
 
@@ -110,6 +111,7 @@ const PersonForm = (props) => {
             setEmailAddress(data.emailAddress);
             setResidencePlace(data.residencePlace);
             setGender(data.gender);
+            setCreationDate(data.creationDate);
             dispatchLifeEvents({ type: "set", data: data.lifeEvents });
         });
     }, [
@@ -125,6 +127,7 @@ const PersonForm = (props) => {
         setEmailAddress,
         setResidencePlace,
         setGender,
+        setCreationDate,
     ]);
 
     const events = lifeEvents.map((lifeEvent, index) => (
@@ -160,6 +163,7 @@ const PersonForm = (props) => {
             phoneNumber,
             emailAddress,
             residencePlace,
+            creationDate,
         };
 
         request({
