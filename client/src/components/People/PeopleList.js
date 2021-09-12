@@ -6,6 +6,7 @@ import Table from "../UI/Table";
 
 const PeopleList = (props) => {
     const [peopleData, setPeopleData] = useState([]);
+    const [showMarriages, setShowMarriages] = useState(true);
     const history = useHistory();
 
     useEffect(() => {
@@ -13,36 +14,49 @@ const PeopleList = (props) => {
             type: "getAll",
             source: "people",
         }).then((data) => {
-            const transformData = data.map((person) => {
-                let birthYear = "None",
-                    deathYear = "None";
+            const transformData = data
+                .filter((person) => {
+                    if (showMarriages) return true;
+                    else return person.name !== "MARRIAGE";
+                })
+                .map((person) => {
 
-                person.lifeEvents.forEach((event) => {
-                    if (event.type === "birth")
-                        birthYear = event.date.slice(0, 4);
 
-                    if (event.type === "death")
-                        deathYear = event.date.slice(0, 4);
+                    let fullname = `${person.name} ${person.surname}`,
+                        birthYear = "None",
+                        deathYear = "None";
+
+                    if (person.name === 'UNKNOWN'){
+                        const firsSentence = person.description.split(".")[0];
+                        fullname = `${firsSentence}. ${person.surname}`;
+                    }
+
+                    person.lifeEvents.forEach((event) => {
+                        if (event.type === "birth" && event.date.length > 0)
+                            birthYear = event.date.slice(0, 4);
+
+                        if (event.type === "death" && event.date.length > 0)
+                            deathYear = event.date.slice(0, 4);
+                    });
+
+                    if (person.isAlive) deathYear = "...";
+
+                    return {
+                        fullname,
+                        lifeYears: `${birthYear}-${deathYear}`,
+                        _id: person._id,
+                    };
                 });
-
-                if (person.isAlive) deathYear = "...";
-
-                return {
-                    fullname: person.name + " " + person.surname,
-                    lifeYears: birthYear + "-" + deathYear,
-                    _id: person._id,
-                };
-            });
 
             setPeopleData(transformData);
         });
-    }, []);
+    }, [showMarriages]);
 
     const addPersonHandler = async (event) => {
         request({
-            type:"create",
-            source: "people"
-        }).then((data)=>{
+            type: "create",
+            source: "people",
+        }).then((data) => {
             history.push("/person/" + data._id);
         });
 
@@ -55,6 +69,15 @@ const PeopleList = (props) => {
     return (
         <div>
             Lista osób
+            <br />
+            <label>
+                <input
+                    type="checkbox"
+                    onChange={(event) => setShowMarriages(event.target.checked)}
+                    defaultChecked
+                />
+                Pokaż MARRIAGE
+            </label>
             <Table
                 onAddClick={addPersonHandler}
                 headers={headers}

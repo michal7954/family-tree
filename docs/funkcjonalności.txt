@@ -20,8 +20,8 @@ bezpieczne logowanie i przesyłanie danych client-server
 eksport danych do uniwersalnego formatu
 
 TODO:
--Wyświetlanie None kiedy data nie jest podana.
--Ukrycie MARRIAGE - filtrowanie.
--Wyświetlanie pierwszego zdania opisu gdy jest UNKNOWN.
--Opis to textarea.
--Scroll.
+V-Wyświetlanie None kiedy data nie jest podana.
+V-Ukrycie MARRIAGE - filtrowanie.
+V-Wyświetlanie pierwszego zdania opisu gdy jest UNKNOWN.
+V-Opis to textarea.
+V-Scroll.

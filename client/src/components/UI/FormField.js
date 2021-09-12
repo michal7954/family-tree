@@ -5,7 +5,12 @@ const FormField = (props) => {
         <div>
             <label>
                 {props.labelText}
-                <input {...props.input} name={props.name} />
+                {
+                    props.input.type !== 'textarea'
+                    ? <input {...props.input} name={props.name} />
+                    : <textarea {...props.input} name={props.name} />
+                }
+                
             </label>
         </div>
     );

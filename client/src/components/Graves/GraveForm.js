@@ -1,9 +1,9 @@
-import { useEffect, useReducer, useRef } from "react";
-import { useInput } from "../../hooks/use-input";
-import { useRadio } from "../../hooks/use-radio";
+import { useEffect, useRef } from "react";
+// import { useInput } from "../../hooks/use-input";
+// import { useRadio } from "../../hooks/use-radio";
 import { useHistory } from "react-router-dom";
 
-import FormField from "../UI/FormField";
+// import FormField from "../UI/FormField";
 import request from "../../helpers/http";
 
 // const lifeEventsReducer = (data, action) => {
