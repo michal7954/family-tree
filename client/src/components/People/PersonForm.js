@@ -247,6 +247,11 @@ const PersonForm = (props) => {
                 labelText="Ojciec: "
                 input={{ type: "text", ...bindFather }}
             />
+            <FormField
+                name="residencePlace"
+                labelText=" Miejsce zamieszkania: "
+                input={{ type: "text", ...bindResidencePlace }}
+            />
             {isAlive && (
                 <>
                     <FormField
@@ -258,11 +263,6 @@ const PersonForm = (props) => {
                         name="emailAddress"
                         labelText="E-mail: "
                         input={{ type: "text", ...bindEmailAddress }}
-                    />
-                    <FormField
-                        name="residencePlace"
-                        labelText=" Miejsce zamieszkania: "
-                        input={{ type: "text", ...bindResidencePlace }}
                     />
                 </>
             )}
