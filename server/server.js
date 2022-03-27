@@ -33,7 +33,17 @@ app.post("/", (req, res) => {
 
     switch (req.body.type) {
         case "getAll":
-            dbActions.getAll(sourceDB).then((docs) => res.send(docs));
+            switch (req.body.source) {
+                case "people":
+                    dbActions.getAllPeople(sourceDB).then((docs) => res.send(docs));
+                    break;
+                case "graves":
+                    dbActions.getAllGraves(sourceDB).then((docs) => res.send(docs));
+                    break;
+                case "cemeteries":
+                    dbActions.getAllCemeteries(sourceDB).then((docs) => res.send(docs));
+                    break;
+            }
             break;
 
         case "get":
