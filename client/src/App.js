@@ -18,8 +18,8 @@ export default function App() {
                         <nav>
                             <Link to="/">Home</Link>
                             <Link to="/people">Osoby</Link>
-                            {/* <Link to="/graves">Nagrobki</Link>
-                            <Link to="/cemeteries">Cmentarze</Link> */}
+                            <Link to="/graves">Nagrobki</Link>
+                            <Link to="/cemeteries">Cmentarze</Link>
                         </nav>
                     </header>
                     <Switch>

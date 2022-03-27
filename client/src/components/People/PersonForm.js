@@ -89,6 +89,11 @@ const PersonForm = (props) => {
         setValue: setResidencePlace,
         bind: bindResidencePlace,
     } = useInput("");
+    const {
+        value: graveId,
+        setValue: setGraveId,
+        bind: bindGraveId,
+    } = useInput("");
     const [creationDate, setCreationDate] = useState();
 
     const [lifeEvents, dispatchLifeEvents] = useReducer(lifeEventsReducer, []);
@@ -110,6 +115,7 @@ const PersonForm = (props) => {
             setPhoneNumber(data.phoneNumber);
             setEmailAddress(data.emailAddress);
             setResidencePlace(data.residencePlace);
+            setGraveId(data.graveId);
             setGender(data.gender);
             setCreationDate(data.creationDate);
             dispatchLifeEvents({ type: "set", data: data.lifeEvents });
@@ -126,6 +132,7 @@ const PersonForm = (props) => {
         setPhoneNumber,
         setEmailAddress,
         setResidencePlace,
+        setGraveId,
         setGender,
         setCreationDate,
     ]);
@@ -163,6 +170,7 @@ const PersonForm = (props) => {
             phoneNumber,
             emailAddress,
             residencePlace,
+            graveId,
             creationDate,
         };
 
@@ -252,7 +260,7 @@ const PersonForm = (props) => {
                 labelText=" Miejsce zamieszkania: "
                 input={{ type: "text", ...bindResidencePlace }}
             />
-            {isAlive && (
+            {isAlive ? (
                 <>
                     <FormField
                         name="phoneNumber"
@@ -265,6 +273,12 @@ const PersonForm = (props) => {
                         input={{ type: "text", ...bindEmailAddress }}
                     />
                 </>
+            ) : (
+                <FormField
+                    name="graveId"
+                    labelText="ID cmentarza: "
+                    input={{ type: "text", ...bindGraveId }}
+                />
             )}
             <button onClick={addNextEventHandler}>
                 Dodaj wydarzenie z życia

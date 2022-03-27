@@ -16,6 +16,7 @@ const personTemplate = {
 
 const graveTemplate = {
     description: "",
+    location: "",
     cemeteryId: "",
     buriedList: [],
 };
