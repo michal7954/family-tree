@@ -7,6 +7,20 @@ cmentarze ale nie jako osobna tabela
 import zdjęć
 sortowanie w tabeli wg czasu dodania
 
+Przykładowe operacje możliwe do wykonania:
+o Dodanie, zmodyfikowanie, usunięcie danych osoby
+o Szczegółowe dane osoby
+o Relacja dwukierunkowa z rodzicami za pomocą klucza głównego
+o Tabelaryczne wyświetlanie danych o osobach
+o Wyświetlenie karty osoby z podstawowymi danymi i listą najbliższych krewnych
+o Wyświetlenie podsumowania całej bazy danych: zliczanie ze względu na płeć, nazwisko itp.
+
+Przykładowy schemat DB:
+o tabela osób: lista rekordów zawierająca dane osób
+o tabela cmentarzy
+o tabela nagrobków zrealizowana jako listy załączone do obiektu cmentarza
+o nagrobek zawiera listę kluczy głównych z tabeli osób
+o Ewentualnie możliwość rozbudowania schematu DB o tabelę kościołów, tabelę narodowości
 
 opcjonalne/przyszłość:
 przycisk włączający edycję formularza
@@ -25,3 +39,5 @@ V-Ukrycie MARRIAGE - filtrowanie.
 V-Wyświetlanie pierwszego zdania opisu gdy jest UNKNOWN.
 V-Opis to textarea.
 V-Scroll.
+-Wyświetlenie karty osoby z podstawowymi danymi i listą najbliższych krewnych
+-Wyświetlenie podsumowania całej bazy danych: zliczanie ze względu na płeć, nazwisko itp.

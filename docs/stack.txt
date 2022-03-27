@@ -1,5 +1,3 @@
-Node.js
-Express.js
-NeDB
-
-React.js
+o Database: NeDB – lekka, obiektowa baza danych wykorzystująca API MongoDB (NoSQL)
+o Backend: Node.js, Express.js, body-parser
+o Frontend: minimalistyczna aplikacja React.js, Fetch API, HTTP POST, podstawowe stylowanie CSS aplikacji
