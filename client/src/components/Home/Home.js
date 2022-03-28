@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import request from "../../helpers/http";
 
 const Home = () => {
@@ -7,10 +7,7 @@ const Home = () => {
     useEffect(() => {
         request({
             type: "getSummary",
-        }).then((data) => {
-            console.log('response', data)
-            setSummaryData(data)
-        });
+        }).then((data) => setSummaryData(data));
     }, []);
 
     const summary = summaryData ? (
