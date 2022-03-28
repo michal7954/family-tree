@@ -55,6 +55,7 @@ const CemeteryForm = (props) => {
             _id: id,
             name,
             address,
+            graves: formData.current.graves,
         };
 
         request({

@@ -34,6 +34,73 @@ const cemeteryTemplate = {
         dbs = newDbsObject;
     };
 
+    module.exports.getSummary = () => {
+        return new Promise((resolve, reject) => {
+            module.exports.getAllPeople(dbs.people).then((people) => {
+                module.exports.getAllGraves(dbs.graves).then((graves) => {
+                    module.exports.getAllCemeteries(dbs.cemeteries).then((cemeteries) => {
+
+                        const peopleOnly = people.filter(
+                            (person) => person.name !== "MARRIAGE"
+                        );
+
+                        const surnamesCount = people.reduce((surnamesCount, person)=>{
+                            if (person.surname in surnamesCount)
+                                return {
+                                    ...surnamesCount,
+                                    [person.surname]: surnamesCount[person.surname] + 1,
+                                }
+                            else
+                                return {
+                                    ...surnamesCount,
+                                    [person.surname]: 1,
+                                }
+                        }, {});
+
+                        const surnamesCountArray = Object.keys(surnamesCount)
+                            .map((surname) => ({
+                                surname,
+                                count: surnamesCount[surname],
+                            }))
+                            .filter((object)=> object.count > 1)
+                            .sort((objectA, objectB)=> objectB.count - objectA.count);
+
+                        const cemeteriesSummary = cemeteries.map(
+                            (cemetery) => ({
+                                name: cemetery.name,
+                                gravesCount: cemetery.graves?.length,
+                                buriedCount: cemetery.graves.reduce(
+                                    (totalBuriedCount, graveId) => {
+                                        const buriedCount = graves.find(
+                                            (grave) => grave._id === graveId
+                                        )?.buriedList?.length;
+                                        
+                                        if (buriedCount)
+                                            totalBuriedCount+=buriedCount;
+                                        return totalBuriedCount;
+                                    }, 0),
+                            })
+                        );
+
+                        resolve({
+                            count: {
+                                people: peopleOnly.length,
+                                graves: graves.length,
+                                cemeteries: cemeteries.length,
+                            },
+                            gender:{
+                                m: peopleOnly.filter((person) => person.gender==="m").length,
+                                w: peopleOnly.filter((person) => person.gender==="w").length,
+                            },
+                            surnamesCount: surnamesCountArray,
+                            cemeteriesSummary,
+                        });
+                    });
+                });
+            });
+        });
+    };
+
     module.exports.getAllPeople = (sourceDB) => {
         return new Promise((resolve, reject) => {
             sourceDB.find({}, (err, docs) => {

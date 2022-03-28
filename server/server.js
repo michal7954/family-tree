@@ -32,6 +32,8 @@ app.post("/", (req, res) => {
     const sourceDB = dbs[req.body.source];
 
     switch (req.body.type) {
+        case "getSummary":
+            dbActions.getSummary().then((data) => res.send(data));
         case "getAll":
             switch (req.body.source) {
                 case "people":

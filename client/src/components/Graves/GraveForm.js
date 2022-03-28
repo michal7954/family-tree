@@ -61,6 +61,7 @@ const GraveForm = (props) => {
             description,
             location,
             cemeteryId,
+            buriedList: formData.current.buriedList,
         };
 
         request({

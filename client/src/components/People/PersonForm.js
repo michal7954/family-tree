@@ -276,7 +276,7 @@ const PersonForm = (props) => {
             ) : (
                 <FormField
                     name="graveId"
-                    labelText="ID cmentarza: "
+                    labelText="ID nagrobka: "
                     input={{ type: "text", ...bindGraveId }}
                 />
             )}

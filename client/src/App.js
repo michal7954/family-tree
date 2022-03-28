@@ -8,6 +8,7 @@ import GravesList from "./components/Graves/GravesList";
 import GraveForm from "./components/Graves/GraveForm";
 import CemeteriesList from "./components/Cemeteries/CemeteriesList";
 import CemeteryForm from "./components/Cemeteries/CemeteryForm";
+import Home from "./components/Home/Home";
 
 export default function App() {
     return (
@@ -35,8 +36,4 @@ export default function App() {
             </div>
         </div>
     );
-}
-
-function Home() {
-    return <h2>Witaj!</h2>;
 }
