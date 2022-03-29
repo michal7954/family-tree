@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import "./App.css";
+import "./App.scss";
 import PeopleList from "./components/People/PeopleList";
 import PersonForm from "./components/People/PersonForm";
 import GravesList from "./components/Graves/GravesList";
@@ -12,17 +12,23 @@ import Home from "./components/Home/Home";
 
 export default function App() {
     return (
-        <div className="App">
-            <div className="App-header">
-                <Router>
-                    <header className="my-header">
-                        <nav>
-                            <Link to="/">Home</Link>
+        <div className="app">
+            <Router>
+                <div className="navigation">
+                <Link to="/">Start</Link>
+                    <div className="navigation__category">
+                        <div className="navigation__category-button">
+                            Tabele
+                        </div>
+                        <div className="navigation__category-content">
                             <Link to="/people">Osoby</Link>
                             <Link to="/graves">Nagrobki</Link>
                             <Link to="/cemeteries">Cmentarze</Link>
-                        </nav>
-                    </header>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div className="content">
                     <Switch>
                         <Route path="/people" component={PeopleList} />
                         <Route path="/person/:id" component={PersonForm} />
@@ -32,8 +38,9 @@ export default function App() {
                         <Route path="/cemetery/:id" component={CemeteryForm} />
                         <Route path="/" component={Home} />
                     </Switch>
-                </Router>
-            </div>
+                </div>
+                
+            </Router>
         </div>
     );
 }
