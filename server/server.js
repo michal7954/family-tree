@@ -51,6 +51,9 @@ app.post("/", (req, res) => {
         case "get":
             dbActions.get(sourceDB, req.body._id).then((doc) => res.send(doc));
             break;
+        case "getPersonCard":
+            dbActions.getPersonCard(sourceDB, req.body._id).then((doc) => res.send(doc));
+            break;
         case "create":
             switch (req.body.source) {
                 case "people":

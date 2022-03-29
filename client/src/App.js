@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.scss";
 import PeopleList from "./components/People/PeopleList";
 import PersonForm from "./components/People/PersonForm";
+import PersonCard from "./components/PersonCard/PersonCard";
 import GravesList from "./components/Graves/GravesList";
 import GraveForm from "./components/Graves/GraveForm";
 import CemeteriesList from "./components/Cemeteries/CemeteriesList";
@@ -30,8 +31,10 @@ export default function App() {
                 </div>
                 <div className="content">
                     <Switch>
+                        
                         <Route path="/people" component={PeopleList} />
                         <Route path="/person/:id" component={PersonForm} />
+                        <Route path="/personCard/:id" component={PersonCard} />
                         <Route path="/graves" component={GravesList} />
                         <Route path="/grave/:id" component={GraveForm} />
                         <Route path="/cemeteries" component={CemeteriesList} />

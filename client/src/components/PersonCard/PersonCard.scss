@@ -1,0 +1,11 @@
+.card{
+    &__parents{
+        display: flex;
+    }
+
+    div {
+        padding: 4px;
+        // border: 1px solid white;
+        // border-collapse: collapse;
+    }
+}

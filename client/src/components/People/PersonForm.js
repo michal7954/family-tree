@@ -193,6 +193,10 @@ const PersonForm = (props) => {
         }
     };
 
+    const showPersonCard = () => {
+        history.push("/personCard/" + id)
+    };
+
     return (
         <form onSubmit={submitHandler}>
             Formularz osoby
@@ -285,6 +289,10 @@ const PersonForm = (props) => {
             </button>
             <div>{events}</div>
             <input type="submit" value="Zapisz" />
+            <br/>
+            <button type="button" onClick={showPersonCard}>
+                Karta osoby
+            </button>
         </form>
     );
 };

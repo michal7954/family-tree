@@ -38,64 +38,81 @@ const cemeteryTemplate = {
         return new Promise((resolve, reject) => {
             module.exports.getAllPeople(dbs.people).then((people) => {
                 module.exports.getAllGraves(dbs.graves).then((graves) => {
-                    module.exports.getAllCemeteries(dbs.cemeteries).then((cemeteries) => {
+                    module.exports
+                        .getAllCemeteries(dbs.cemeteries)
+                        .then((cemeteries) => {
+                            const peopleOnly = people.filter(
+                                (person) => person.name !== "MARRIAGE"
+                            );
 
-                        const peopleOnly = people.filter(
-                            (person) => person.name !== "MARRIAGE"
-                        );
+                            const surnamesCount = people.reduce(
+                                (surnamesCount, person) => {
+                                    if (person.surname in surnamesCount)
+                                        return {
+                                            ...surnamesCount,
+                                            [person.surname]:
+                                                surnamesCount[person.surname] +
+                                                1,
+                                        };
+                                    else
+                                        return {
+                                            ...surnamesCount,
+                                            [person.surname]: 1,
+                                        };
+                                },
+                                {}
+                            );
 
-                        const surnamesCount = people.reduce((surnamesCount, person)=>{
-                            if (person.surname in surnamesCount)
-                                return {
-                                    ...surnamesCount,
-                                    [person.surname]: surnamesCount[person.surname] + 1,
-                                }
-                            else
-                                return {
-                                    ...surnamesCount,
-                                    [person.surname]: 1,
-                                }
-                        }, {});
+                            const surnamesCountArray = Object.keys(
+                                surnamesCount
+                            )
+                                .map((surname) => ({
+                                    surname,
+                                    count: surnamesCount[surname],
+                                }))
+                                .filter((object) => object.count > 1)
+                                .sort(
+                                    (objectA, objectB) =>
+                                        objectB.count - objectA.count
+                                );
 
-                        const surnamesCountArray = Object.keys(surnamesCount)
-                            .map((surname) => ({
-                                surname,
-                                count: surnamesCount[surname],
-                            }))
-                            .filter((object)=> object.count > 1)
-                            .sort((objectA, objectB)=> objectB.count - objectA.count);
+                            const cemeteriesSummary = cemeteries.map(
+                                (cemetery) => ({
+                                    name: cemetery.name,
+                                    gravesCount: cemetery.graves?.length,
+                                    buriedCount: cemetery.graves.reduce(
+                                        (totalBuriedCount, graveId) => {
+                                            const buriedCount = graves.find(
+                                                (grave) => grave._id === graveId
+                                            )?.buriedList?.length;
 
-                        const cemeteriesSummary = cemeteries.map(
-                            (cemetery) => ({
-                                name: cemetery.name,
-                                gravesCount: cemetery.graves?.length,
-                                buriedCount: cemetery.graves.reduce(
-                                    (totalBuriedCount, graveId) => {
-                                        const buriedCount = graves.find(
-                                            (grave) => grave._id === graveId
-                                        )?.buriedList?.length;
-                                        
-                                        if (buriedCount)
-                                            totalBuriedCount+=buriedCount;
-                                        return totalBuriedCount;
-                                    }, 0),
-                            })
-                        );
+                                            if (buriedCount)
+                                                totalBuriedCount += buriedCount;
+                                            return totalBuriedCount;
+                                        },
+                                        0
+                                    ),
+                                })
+                            );
 
-                        resolve({
-                            count: {
-                                people: peopleOnly.length,
-                                graves: graves.length,
-                                cemeteries: cemeteries.length,
-                            },
-                            gender:{
-                                m: peopleOnly.filter((person) => person.gender==="m").length,
-                                w: peopleOnly.filter((person) => person.gender==="w").length,
-                            },
-                            surnamesCount: surnamesCountArray,
-                            cemeteriesSummary,
+                            resolve({
+                                count: {
+                                    people: peopleOnly.length,
+                                    graves: graves.length,
+                                    cemeteries: cemeteries.length,
+                                },
+                                gender: {
+                                    m: peopleOnly.filter(
+                                        (person) => person.gender === "m"
+                                    ).length,
+                                    w: peopleOnly.filter(
+                                        (person) => person.gender === "w"
+                                    ).length,
+                                },
+                                surnamesCount: surnamesCountArray,
+                                cemeteriesSummary,
+                            });
                         });
-                    });
                 });
             });
         });
@@ -140,6 +157,40 @@ const cemeteryTemplate = {
         return new Promise((resolve, reject) =>
             sourceDB.findOne({ _id }, (err, doc) => resolve(doc))
         );
+    };
+
+    module.exports.getPersonCard = (sourceDB, _id) => {
+        return new Promise((resolve, reject) => {
+            module.exports.get(sourceDB, _id).then((person) => {
+                const promises = [];
+                debugger
+                promises.push(module.exports.get(sourceDB, person.father));
+                promises.push(module.exports.get(sourceDB, person.mother));
+                person.children?.forEach((child) =>
+                    promises.push(module.exports.get(sourceDB, child))
+                );
+
+                Promise.all(promises).then(([father, mother, ...children]) => {
+                    
+                    resolve({
+                        ...person,
+                        fullName: `${person.name} ${person.surname}`,
+                        father: father?{
+                            _id: father._id,
+                            fullName: `${father.name} ${father.surname}`
+                        }:{},
+                        mother: mother?{
+                            _id: mother._id,
+                            fullName: `${mother.name} ${mother.surname}`
+                        }:{},
+                        children: children.map((child)=>(child?{
+                            _id: child._id,
+                            fullName: `${child.name} ${child.surname}`
+                        }:{}))
+                    })
+                });
+            });
+        });
     };
 
     module.exports.createPerson = (sourceDB) => {
