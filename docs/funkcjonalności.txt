@@ -40,5 +40,5 @@ V-Wyświetlanie pierwszego zdania opisu gdy jest UNKNOWN.
 V-Opis to textarea.
 V-Scroll.
 V-Obsługa trzech tabel: people, graves, cemeteries
--Wyświetlenie karty osoby z podstawowymi danymi i listą najbliższych krewnych
+V-Wyświetlenie karty osoby z podstawowymi danymi i listą najbliższych krewnych
 V-Wyświetlenie podsumowania całej bazy danych: zliczanie ze względu na płeć, nazwisko itp.

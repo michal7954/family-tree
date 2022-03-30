@@ -27,26 +27,35 @@ const PersonCard = (props) => {
         history.push("/personCard/" + id);
     };
 
-    const childElement = (childData) => {
-        return <div className="card__children-child" onClick={()=>navigate(childData._id)}>{childData.fullName}</div>;
-    };
 
     if (!personData) return null;
+
+    const Field = ({ data: {fullName, _id} }) => (
+        <div
+            className={`card__field`}
+            onClick={() => _id && navigate(_id)}
+        >
+            {fullName ? <span className="card__button">{fullName}</span> : "-"}
+        </div>
+    );
 
     return (
         <div className="card">
             <div className="card__parents">
-                <div className="card__parents-father" onClick={()=>navigate(personData.father._id)}>
-                    {personData.father.fullName}
-                </div>
-                <div className="card__parents-mother" onClick={()=>navigate(personData.mother._id)}>
-                    {personData.mother.fullName}
-                </div>
+                <Field data={personData.father} />
+                <Field data={personData.mother} />
             </div>
-            <div className="card__person">{personData.fullName}</div>
+            <div
+                className={`card__field`}
+            >
+                {personData.fullName}<br/>
+                *{personData.lifeEvents.find((event)=>event.type==="birth")?.date}<br/>
+                +{personData.lifeEvents.find((event)=>event.type==="death")?.date}<br/>
+                {personData.description}
+            </div>
             <div className="card__children">
                 {personData.children.map((childData) =>
-                    childElement(childData)
+                    <Field data={childData} />
                 )}
             </div>
         </div>
