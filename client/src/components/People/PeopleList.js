@@ -7,6 +7,7 @@ import Table from "../UI/Table";
 const PeopleList = (props) => {
     const [peopleData, setPeopleData] = useState([]);
     const [showMarriages, setShowMarriages] = useState(false);
+    const [filter, setFilter] = useState("");
     const history = useHistory();
 
     useEffect(() => {
@@ -20,13 +21,11 @@ const PeopleList = (props) => {
                     else return person.name !== "MARRIAGE";
                 })
                 .map((person) => {
-
-
                     let fullname = `${person.name} ${person.surname}`,
                         birthYear = "None",
                         deathYear = "None";
 
-                    if (person.name === 'UNKNOWN'){
+                    if (person.name === "UNKNOWN") {
                         const firsSentence = person.description.split(".")[0];
                         fullname = `${firsSentence}. ${person.surname}`;
                     }
@@ -42,6 +41,7 @@ const PeopleList = (props) => {
                     if (person.isAlive) deathYear = "...";
 
                     return {
+                        ...person,
                         fullname,
                         lifeYears: `${birthYear}-${deathYear}`,
                         _id: person._id,
@@ -66,6 +66,15 @@ const PeopleList = (props) => {
     const headers = ["Imię i nazwisko", "Lata życia"];
     const keys = ["fullname", "lifeYears"];
 
+    const filteredPeopleData = peopleData.filter(
+        (personData) =>
+            personData._id.includes(filter) ||
+            personData.fullname.toLowerCase().includes(filter.toLowerCase()) ||
+            personData.description.toLowerCase().includes(filter.toLowerCase()) ||
+            personData.lifeYears.includes(filter) ||
+            personData.graveId?.includes(filter)
+    );
+
     return (
         <div>
             Lista osób
@@ -77,11 +86,17 @@ const PeopleList = (props) => {
                 />
                 Pokaż MARRIAGE
             </label>
+            <br />
+            <input
+                type="text"
+                placeholder="filtrowanie"
+                onChange={(event) => setFilter(event.target.value)}
+            />
             <Table
                 onAddClick={addPersonHandler}
                 headers={headers}
                 keys={keys}
-                data={peopleData}
+                data={filteredPeopleData}
                 detailsAddress="/person/"
             />
         </div>

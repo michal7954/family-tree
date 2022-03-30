@@ -42,3 +42,4 @@ V-Scroll.
 V-Obsługa trzech tabel: people, graves, cemeteries
 V-Wyświetlenie karty osoby z podstawowymi danymi i listą najbliższych krewnych
 V-Wyświetlenie podsumowania całej bazy danych: zliczanie ze względu na płeć, nazwisko itp.
+-Filtrowanie tabel po wszystkich sensownych danych

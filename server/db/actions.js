@@ -11,6 +11,7 @@ const personTemplate = {
     phoneNumber: "",
     emailAddress: "",
     residencePlace: "",
+    graveId: "",
     creationDate: null,
 };
 
