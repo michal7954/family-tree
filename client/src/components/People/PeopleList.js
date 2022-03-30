@@ -6,7 +6,7 @@ import Table from "../UI/Table";
 
 const PeopleList = (props) => {
     const [peopleData, setPeopleData] = useState([]);
-    const [showMarriages, setShowMarriages] = useState(true);
+    const [showMarriages, setShowMarriages] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
@@ -74,7 +74,6 @@ const PeopleList = (props) => {
                 <input
                     type="checkbox"
                     onChange={(event) => setShowMarriages(event.target.checked)}
-                    defaultChecked
                 />
                 Pokaż MARRIAGE
             </label>

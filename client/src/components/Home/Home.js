@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import request from "../../helpers/http";
+import "./Home.scss"
 
 const Home = () => {
     const [summaryData, setSummaryData] = useState();
@@ -48,7 +49,7 @@ const Home = () => {
     ) : null;
 
     return (
-        <div>
+        <div className="home">
             <h2>Witaj!</h2>
             {summary}
         </div>
