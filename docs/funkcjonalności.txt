@@ -43,5 +43,5 @@ V-Obsługa trzech tabel: people, graves, cemeteries
 V-Wyświetlenie karty osoby z podstawowymi danymi i listą najbliższych krewnych
 V-Wyświetlenie podsumowania całej bazy danych: zliczanie ze względu na płeć, nazwisko itp.
 V-Filtrowanie tabel po wszystkich sensownych danych
--Uzupełnienie danych w bazie - cmentarze, nagrobki
--Oracle Data Modeler
+V-Uzupełnienie danych w bazie - cmentarze, nagrobki
+V-Oracle Data Modeler

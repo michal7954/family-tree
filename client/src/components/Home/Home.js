@@ -42,7 +42,7 @@ const Home = () => {
             <table>
                 <tbody>
                     <tr><th>Nazwa</th><th>Liczba nagrobków</th><th>Liczba pochowanych</th></tr>
-                    {summaryData.cemeteriesSummary.map((cemetery)=><tr key={cemetery.name}><td>{cemetery.name}</td><td>{cemetery.gravesCount}</td><td>{cemetery.buriedCount}</td></tr>)}
+                    {summaryData.cemeteriesSummary.sort((a, b) => b.buriedCount - a.buriedCount).map((cemetery)=><tr key={cemetery.name}><td>{cemetery.name}</td><td>{cemetery.gravesCount}</td><td>{cemetery.buriedCount}</td></tr>)}
                 </tbody>
             </table>
         </>
