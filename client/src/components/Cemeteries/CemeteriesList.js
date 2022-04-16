@@ -6,6 +6,7 @@ import Table from "../UI/Table";
 
 const CemeteriesList = (props) => {
     const [cemeteriesData, setCemeteriesData] = useState([]);
+    const [filter, setFilter] = useState("");
     const history = useHistory();
 
     useEffect(() => {
@@ -40,14 +41,26 @@ const CemeteriesList = (props) => {
     const headers = ["Nazwa", "Adres"];
     const keys = ["name", "address"];
 
+    const filteredCemeteriesData = cemeteriesData.filter(
+        (cemeteryData) =>
+            cemeteryData._id.includes(filter) ||
+            cemeteryData.name.toLowerCase().includes(filter.toLowerCase()) ||
+            cemeteryData.address.toLowerCase().includes(filter.toLowerCase())
+    );
+
     return (
         <div>
-            Lista cmentarzy
+            Lista cmentarzy<br />
+            <input
+                type="text"
+                placeholder="filtrowanie"
+                onChange={(event) => setFilter(event.target.value)}
+            />
             <Table
                 onAddClick={addCemeteryHandler}
                 headers={headers}
                 keys={keys}
-                data={cemeteriesData}
+                data={filteredCemeteriesData}
                 detailsAddress="/cemetery/"
             />
         </div>
