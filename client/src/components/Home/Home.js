@@ -34,7 +34,7 @@ const Home = () => {
             <table>
                 <tbody>
                     <tr><th>Nazwisko</th><th>Ilość wystąpień</th></tr>
-                    {summaryData.surnamesCount.map(({surname, count})=><tr key={surname}><td>{surname}</td><td>{count}</td></tr>)}
+                    {summaryData.surnamesCount.map(({surname, count})=><tr key={surname}><td>{surname || '-'}</td><td>{count}</td></tr>)}
                 </tbody>
             </table>
 
