@@ -122,10 +122,16 @@ const cemeteryTemplate = {
     module.exports.getAllPeople = (sourceDB) => {
         return new Promise((resolve, reject) => {
             sourceDB.find({}, (err, docs) => {
-                const sorted = docs.sort((a, b) => {
-                    return a.creationDate - b.creationDate;
-                });
-                resolve(sorted);
+                dbs.graves.find({}, (err, gravesList) =>{
+                    const peopleDataWithCemeteryId = docs.map((doc)=>({
+                        ...doc,
+                        cemeteryId: gravesList.find(grave => grave._id === doc.graveId)?.cemeteryId,
+                    }))
+                    const sorted = peopleDataWithCemeteryId.sort((a, b) => {
+                        return a.creationDate - b.creationDate;
+                    });
+                    resolve(sorted);
+                })
             });
         });
     };

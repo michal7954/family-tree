@@ -72,7 +72,8 @@ const PeopleList = (props) => {
             personData.fullname.toLowerCase().includes(filter.toLowerCase()) ||
             personData.description.toLowerCase().includes(filter.toLowerCase()) ||
             personData.lifeYears.includes(filter) ||
-            personData.graveId?.includes(filter)
+            personData.graveId?.includes(filter) ||
+            personData.cemeteryId?.includes(filter)
     );
 
     return (
